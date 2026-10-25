@@ -3,7 +3,9 @@ name: Packaging(MacOS)
 on:
   push:
     branches:
-      - master
+      - main
+    tags:
+      - "v*"
     paths-ignore:
       - "*.md"
       - "LICENSE"
@@ -18,8 +20,11 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 env:
-  PRODUCT: flameshot
+  PRODUCT: zshot
   MACOSX_DEPLOYMENT_TARGET: "14.0"
 
 jobs:
@@ -38,7 +43,7 @@ jobs:
     runs-on: ${{ matrix.dist.os }}
 
     env:
-      APP_NAME: flameshot
+      APP_NAME: zshot
       DIR_BUILD: build
 
     steps:
@@ -90,8 +95,8 @@ jobs:
 
       - name: Configure
         run: |
-          rm -rf "${DIR_BUILD}/src/flameshot.dmg"
-          rm -rf "${DIR_BUILD}/src/flameshot.app"
+          rm -rf "${DIR_BUILD}"/src/*.dmg
+          rm -rf "${DIR_BUILD}/src/zshot.app"
 
           cmake \
             -GNinja \
@@ -99,8 +104,7 @@ jobs:
             -B "${DIR_BUILD}" \
             -DQt6_DIR="$(brew --prefix qt@6)/lib/cmake/Qt6" \
             -DCMAKE_OSX_DEPLOYMENT_TARGET=14.0 \
-            -DCMAKE_OSX_SYSROOT="$(xcrun --sdk macosx --show-sdk-path)" \
-            -DUSE_MONOCHROME_ICON=True
+            -DCMAKE_OSX_SYSROOT="$(xcrun --sdk macosx --show-sdk-path)"
 
       - name: Show CMake deployment target
         run: |
@@ -112,17 +116,25 @@ jobs:
 
       - name: Inspect resulting executable
         run: |
-          otool -l "${DIR_BUILD}/src/flameshot.app/Contents/MacOS/flameshot" | \
+          otool -l "${DIR_BUILD}/src/zshot.app/Contents/MacOS/zshot" | \
             sed -n '/LC_BUILD_VERSION/,/cmd/p'
 
       - name: Build dmg package
         run: |
           cd "${DIR_BUILD}"
           ninja create_dmg
+          mv "src/Zshot-${VERSION}.dmg" "src/Zshot-${VERSION}-${{ matrix.dist.arch }}.dmg"
 
       - name: Artifact Upload
         uses: actions/upload-artifact@v7
         with:
           name: ${{ env.PRODUCT }}-${{ env.VER_INFO }}-artifact-macos-${{ matrix.dist.arch }}
-          path: ${{ github.workspace }}/build/src/Flameshot-${{ env.VERSION }}.dmg
+          path: ${{ github.workspace }}/build/src/Zshot-${{ env.VERSION }}-${{ matrix.dist.arch }}.dmg
           overwrite: true
+
+      - name: Attach to the GitHub release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ github.workspace }}/build/src/Zshot-${{ env.VERSION }}-${{ matrix.dist.arch }}.dmg

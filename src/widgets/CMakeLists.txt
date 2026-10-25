@@ -8,6 +8,7 @@ target_sources(
         infowindow.ui
         capturelauncher.ui
 
+        attributionbanner.h
         backgroundeditor.h
         backgroundwindow.h
         toggleswitch.h
@@ -39,6 +40,7 @@ endif()
 target_sources(
         flameshot
         PRIVATE
+        attributionbanner.cpp
         backgroundeditor.cpp
         backgroundwindow.cpp
         toggleswitch.cpp

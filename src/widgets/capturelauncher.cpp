@@ -9,6 +9,7 @@
 #include "utils/globalvalues.h"
 #include "utils/screenshotsaver.h"
 #include "utils/zshottheme.h"
+#include "widgets/attributionbanner.h"
 
 #include <QBoxLayout>
 #include <QCheckBox>
@@ -79,6 +80,8 @@ CaptureLauncher::CaptureLauncher(QDialog* parent)
     m_beautify->setToolTip(
       tr("Put the capture on a background, round its corners and add a "
          "shadow before copying or saving it"));
+    ui->verticalLayout_2->insertWidget(
+      0, new AttributionBanner(QStringLiteral("launcher"), this));
     if (QBoxLayout* box = ui->verticalLayout_2) {
         const int index = box->indexOf(ui->launchButton);
         box->insertWidget(index < 0 ? box->count() : index, m_beautify);

@@ -3,8 +3,9 @@ name: Packaging(Windows)
 on:
   push:
     branches:
-      - master
-      - fix*
+      - main
+    tags:
+      - 'v*'
     paths-ignore:
       - '*.md'
       - 'LICENSE'
@@ -19,9 +20,11 @@ on:
   
   workflow_dispatch:
 
+permissions:
+  contents: write
 
 env:
-  PRODUCT: flameshot
+  PRODUCT: zshot
 
 jobs:
   windows-pack:
@@ -54,7 +57,6 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-#          ref: master
 
       - name: Checkout Source code
         if: github.event_name == 'pull_request'
@@ -154,27 +156,27 @@ jobs:
         if:  matrix.type == 'installer'
         shell: pwsh
         run: |
-          Move-Item -Path $env:GITHUB_WORKSPACE/build/Package/Flameshot-*-${{ matrix.config.pak_arch }}.msi -Destination $env:GITHUB_WORKSPACE/build/Package/installer/Flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi
+          Move-Item -Path $env:GITHUB_WORKSPACE/build/Package/Zshot-*-${{ matrix.config.pak_arch }}.msi -Destination $env:GITHUB_WORKSPACE/build/Package/installer/Zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi
 
       - name: Package Prepare (portable)
         if:  matrix.type == 'portable'
         shell: pwsh
         run: |
-          Move-Item -Path $env:GITHUB_WORKSPACE/build/Package/flameshot-*-${{ matrix.config.pak_arch }}.zip -Destination $env:GITHUB_WORKSPACE/build/Package/portable/flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip
+          Move-Item -Path $env:GITHUB_WORKSPACE/build/Package/zshot-*-${{ matrix.config.pak_arch }}.zip -Destination $env:GITHUB_WORKSPACE/build/Package/portable/zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip
 
       - name: SHA256Sum of Windows installer
         if:  matrix.type == 'installer'
         shell: bash
         run: |
-          sha256sum $GITHUB_WORKSPACE/build/Package/installer/Flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi
-          sha256sum $GITHUB_WORKSPACE/build/Package/installer/Flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi > $GITHUB_WORKSPACE/build/Package/installer/Flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi.sha256sum
+          sha256sum $GITHUB_WORKSPACE/build/Package/installer/Zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi
+          sha256sum $GITHUB_WORKSPACE/build/Package/installer/Zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi > $GITHUB_WORKSPACE/build/Package/installer/Zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi.sha256sum
 
       - name: SHA256Sum of Windows portable
         if:  matrix.type == 'portable'
         shell: bash
         run: |
-          sha256sum $GITHUB_WORKSPACE/build/Package/portable/flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip
-          sha256sum $GITHUB_WORKSPACE/build/Package/portable/flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip > $GITHUB_WORKSPACE/build/Package/portable/flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip.sha256sum
+          sha256sum $GITHUB_WORKSPACE/build/Package/portable/zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip
+          sha256sum $GITHUB_WORKSPACE/build/Package/portable/zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip > $GITHUB_WORKSPACE/build/Package/portable/zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip.sha256sum
 
       - name: Artifact Upload
         if:  matrix.type == 'installer'
@@ -182,8 +184,8 @@ jobs:
         with:
           name: ${{ env.PRODUCT }}-${{ env.VER_INFO }}-artifact-win-${{ matrix.config.arch }}-${{ matrix.type }}
           path: |
-            ${{ github.workspace }}/build/Package/installer/Flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi
-            ${{ github.workspace }}/build/Package/installer/Flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi.sha256sum
+            ${{ github.workspace }}/build/Package/installer/Zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi
+            ${{ github.workspace }}/build/Package/installer/Zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.msi.sha256sum
           overwrite: true
 
       - name: Artifact Upload
@@ -192,6 +194,14 @@ jobs:
         with:
           name: ${{ env.PRODUCT }}-${{ env.VER_INFO }}-artifact-win-${{ matrix.config.arch }}-${{ matrix.type }}
           path: |
-            ${{ github.workspace }}/build/Package/portable/flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip
-            ${{ github.workspace }}/build/Package/portable/flameshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip.sha256sum
+            ${{ github.workspace }}/build/Package/portable/zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip
+            ${{ github.workspace }}/build/Package/portable/zshot-${{ env.VERSION }}-${{ matrix.config.pak_arch }}.zip.sha256sum
           overwrite: true
+
+      - name: Attach to the GitHub release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ github.workspace }}/build/Package/installer/*
+            ${{ github.workspace }}/build/Package/portable/*

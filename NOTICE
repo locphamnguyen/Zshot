@@ -1,0 +1,59 @@
+Zshot
+Copyright (C) 2026 Nguyễn Tiến Lộc (Loc Nguyen) <locnt@locnguyendata.com>
+
+Zshot is based on Flameshot:
+Copyright (C) 2017-2026 Alejandro Sirgo Rica & Flameshot Contributors
+https://github.com/flameshot-org/flameshot
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version, the same license as Flameshot. See the LICENSE file.
+
+Public source code: https://github.com/locphamnguyen/Zshot
+
+==============================================================================
+              ATTRIBUTION & APPROPRIATE LEGAL NOTICES (GPLv3 §7b)
+==============================================================================
+
+As an additional term under GPLv3 Section 7(b), which applies to the parts of
+Zshot authored by its copyright holder above (the background beautifier, the
+Zshot interface and the attribution banner), redistributions and modified
+versions MUST preserve the author attribution shown in the Appropriate Legal
+Notices of the running program:
+
+  Maintainer & primary author of Zshot:
+    Nguyễn Tiến Lộc (Loc Nguyen)
+    Website: https://locnguyendata.com
+    Email:   locnt@locnguyendata.com
+
+The Settings, background editor and launcher windows contain a scrolling
+attribution banner (src/widgets/attributionbanner.cpp) displaying the
+maintainer's contact and services. Removing, hiding, disabling, altering the
+link target or the text of this banner WITHOUT a commercial license key is not
+permitted by this term.
+
+  Services: Tư vấn, custom tính năng, triển khai Zshot cho doanh nghiệp.
+  Commercial / banner-removal licensing: locnt@locnguyendata.com
+
+A licensed deployment hides the banner by setting the license key in the
+environment variable FRIENDS or the "friends" option of zshot.ini.
+
+==============================================================================
+                          TRADEMARK (GPLv3 §7e)
+==============================================================================
+
+The name "Zshot", its logo and brand identity are not licensed under the GPL.
+You may fork and redistribute the source under GPLv3, but you may not use the
+"Zshot" name or logo for a derivative without prior written permission.
+"Flameshot" is the name of the upstream project and belongs to its authors.
+
+==============================================================================
+                          THIRD-PARTY MATERIAL
+==============================================================================
+
+- Background photos in data/backgrounds: Unsplash License, credits in
+  data/backgrounds/README.md
+- Gradient presets adapted from beautiFULLshot (MIT License,
+  Copyright (c) 2025 BeautyFullShot Contributors)
+- Material Design icons in data/img/material: Apache License 2.0

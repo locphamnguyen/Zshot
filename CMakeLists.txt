@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.22)
 # cmake_policy(SET CMP0076 OLD)
 
-set(FLAMESHOT_VERSION 15.0.0)
+# Zshot version (Zshot 1.0.0 is based on Flameshot 15.0.0)
+set(FLAMESHOT_VERSION 1.0.0)
 
 # Flameshot-org
 set(GIT_API_URL "https://api.github.com/repos/flameshot-org/flameshot/releases/latest")
@@ -159,12 +160,12 @@ endif()
 add_subdirectory(src)
 
 # CPack
-set(CPACK_PACKAGE_VENDOR "flameshot-org")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Powerful yet simple to use screenshot software.")
+set(CPACK_PACKAGE_VENDOR "Zshot")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Zshot - screenshots with annotations and beautiful backgrounds (based on Flameshot).")
 set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
-set(CPACK_PACKAGE_HOMEPAGE_URL "https://flameshot.org")
-set(CPACK_PACKAGE_CONTACT "flameshot-org developers <info@flameshot.org>")
-set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data/img/app/org.flameshot.Flameshot.svg") # TODO: Can any generator make
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/locphamnguyen/Zshot")
+set(CPACK_PACKAGE_CONTACT "Nguyen Tien Loc <locnt@locnguyendata.com>")
+set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/data/img/app/zshot.svg") # TODO: Can any generator make
 # use of this?
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md") # TODO: Where is this used? Do we need a better
 # source?
@@ -174,19 +175,21 @@ if(WIN32)
   include(InstallRequiredSystemLibraries)
 
   if(USE_PORTABLE_CONFIG)
-    set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PROJECT_VERSION}-win64")
+    set(CPACK_PACKAGE_FILE_NAME "zshot-${PROJECT_VERSION}-win64")
     set(CPACK_GENERATOR ZIP)
 
   else()
     set(CPACK_GENERATOR WIX ZIP)
-    set(CPACK_PACKAGE_NAME "${PROJECT_NAME_CAPITALIZED}")
-    set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME_CAPITALIZED}")
-    set(CPACK_PACKAGE_EXECUTABLES ${PROJECT_NAME} "${PROJECT_NAME_CAPITALIZED}")
-    set(CPACK_CREATE_DESKTOP_LINKS ${PROJECT_NAME})
+    # Zshot: the executable is zshot.exe (the project keeps its upstream name)
+    set(CPACK_PACKAGE_NAME "Zshot")
+    set(CPACK_PACKAGE_FILE_NAME "Zshot-${PROJECT_VERSION}-win64")
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "Zshot")
+    set(CPACK_PACKAGE_EXECUTABLES zshot "Zshot")
+    set(CPACK_CREATE_DESKTOP_LINKS zshot)
 
     # WIX (Windows .msi installer)
     # 48x48 pixels
-    set(CPACK_WIX_PRODUCT_ICON "${CMAKE_SOURCE_DIR}/data/img/app/flameshot.ico")
+    set(CPACK_WIX_PRODUCT_ICON "${CMAKE_SOURCE_DIR}/data/img/app/zshot.ico")
     # Supported languages can be found at http://wixtoolset.org/documentation/manual/v3/wixui/wixui_localization.html
     # set(CPACK_WIX_CULTURES "ar-SA,bg-BG,ca-ES,hr-HR,cs-CZ,da-DK,nl-NL,en-US,et-EE,fi-FI,fr-FR,de-DE")
     set(CPACK_WIX_UI_BANNER "${CMAKE_SOURCE_DIR}/packaging/win-installer/Bitmaps/CPACK_WIX_UI_BANNER.BMP")
@@ -199,14 +202,14 @@ if(WIN32)
     set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/packaging/win-installer/LICENSE/GPL-3.0.txt")
     set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/README.md")
 
-    set(CPACK_WIX_UPGRADE_GUID "26D8062A-66D9-48D9-8924-42090FB9B3F9")
+    set(CPACK_WIX_UPGRADE_GUID "7B1D5E2C-4A8F-4C35-9E61-3F0B2D7A9C14")
   endif()
 elseif(APPLE)
   set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY 0)
-  set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PROJECT_VERSION}-osx")
+  set(CPACK_PACKAGE_FILE_NAME "zshot-${PROJECT_VERSION}-osx")
   set(CPACK_GENERATOR ZIP)
 else()
-  set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PROJECT_VERSION}-linux")
+  set(CPACK_PACKAGE_FILE_NAME "zshot-${PROJECT_VERSION}-linux")
   set(CPACK_GENERATOR TGZ)
   set(CPACK_SOURCE_GENERATOR TGZ)
 endif()

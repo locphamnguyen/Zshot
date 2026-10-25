@@ -2,48 +2,106 @@
   <img src="data/img/app/zshot.png" alt="Zshot" width="120" />
   <h1>Zshot</h1>
   <p><b>Chụp màn hình, vẽ chú thích và làm đẹp ảnh chụp chỉ trong vài giây.</b></p>
-  <p>Fork của <a href="https://github.com/flameshot-org/flameshot">Flameshot</a> · giấy phép GPLv3 · giao diện theo bộ nhận diện ZCRM</p>
+  <p>
+    <a href="https://github.com/locphamnguyen/Zshot/releases/latest">Tải về</a> ·
+    <a href="#cài-đặt">Cài đặt</a> ·
+    <a href="#giấy-phép">Giấy phép</a> ·
+    <a href="https://locnguyendata.com/?utm_source=github&amp;utm_medium=readme&amp;utm_campaign=service_promo&amp;utm_content=zshot_readme">Tư vấn &amp; triển khai</a>
+  </p>
 </div>
 
-## Zshot có gì
+## Giới thiệu
 
-- **Mọi công cụ của Flameshot**: chọn vùng, bút, mũi tên, khung, chữ, làm mờ, đánh số, ghim ảnh lên màn hình, sao chép, lưu.
-- **Làm đẹp nền** (nút trên thanh công cụ hoặc phím **G**): đặt ảnh chụp lên nền và xem trước ngay.
-  - **Hình nền**: 36 ảnh có sẵn đóng gói trong phần mềm (Unsplash, xem `data/backgrounds/README.md`).
-  - **Chuyển sắc**: 24 mẫu màu chuyển.
+**Zshot bắt đầu từ mã nguồn [Flameshot](https://github.com/flameshot-org/flameshot)**, phần mềm chụp màn hình mã nguồn mở của Alejandro Sirgo Rica và cộng đồng Flameshot. Zshot giữ nguyên toàn bộ công cụ chụp và vẽ của Flameshot, rồi bổ sung:
+
+- **Làm đẹp nền cho ảnh chụp** (lấy ý tưởng từ [beautiFULLshot](https://github.com/itsddvn/beautiFULLshot)): đặt ảnh lên hình nền, màu chuyển sắc, màu đơn hoặc ảnh của bạn; chỉnh lề, bo góc, đổ bóng, viền, tỉ lệ khung cho mạng xã hội.
+- **Giao diện mới theo bộ nhận diện ZCRM**, tiếng Việt mặc định.
+- **Thư viện 36 hình nền** đóng gói sẵn, và thư viện ảnh riêng của bạn.
+
+Zshot là **phần mềm mã nguồn mở theo đúng giấy phép của Flameshot: GNU GPL v3** (xem [Giấy phép](#giấy-phép)). Bạn được dùng miễn phí, đọc, sửa và phân phối lại mã nguồn theo các điều khoản đó.
+
+## Tính năng
+
+- **Mọi công cụ của Flameshot**: chọn vùng, bút, đường thẳng, mũi tên, khung, hình tròn, bút dạ, chữ, làm mờ, đảo màu, đánh số, ghim ảnh lên màn hình, sao chép, lưu, hoàn tác.
+- **Làm đẹp nền** (nút trên thanh công cụ hoặc phím **G**), xem trước ngay khi chỉnh:
+  - **Hình nền**: 36 ảnh có sẵn (Unsplash, xem [`data/backgrounds/README.md`](data/backgrounds/README.md)).
+  - **Chuyển sắc**: 24 mẫu.
   - **Màu**: màu đơn, màu tự động lấy từ mép ảnh, hoặc nền trong suốt.
-  - **Ảnh**: ảnh của bạn, thêm từ máy tính hoặc kéo thả vào, được giữ lại trong thư viện.
+  - **Ảnh**: ảnh của bạn, thêm từ máy hoặc kéo thả vào, được giữ lại trong thư viện.
   - **Tỉ lệ khung**: Auto, 1:1, 4:5, 9:16, 16:9, 2:1, 1.91:1, 3:4.
   - **Điều chỉnh**: lề, bo góc, đổ bóng, làm mờ nền, viền.
-- **Tự thêm nền cho mọi ảnh chụp** (Cài đặt › Nền ảnh) hoặc dùng tham số `--background`:
-
-  ```shell
-  zshot full --background -c
-  zshot gui --background
-  ```
-
+- **Tự thêm nền cho mọi ảnh chụp** (Cài đặt › Nền ảnh), hoặc dùng tham số `--background`.
 - **Làm đẹp ảnh trong clipboard** từ menu khay hệ thống, kể cả ảnh chụp bằng phần mềm khác.
-- **Phím tắt mới**: **G** làm đẹp nền, **N** đánh số, **Shift+G** lấy màu trên màn hình.
-- Giao diện tiếng Việt mặc định, màu và kiểu chữ theo ZCRM.
+- **Phím tắt**: **G** làm đẹp nền · **N** đánh số · **Shift+G** lấy màu trên màn hình.
 
-Zshot dùng cấu hình riêng (`zshot.ini`) và mã nhận diện tiến trình riêng, nên chạy song song với Flameshot mà không ảnh hưởng nhau.
+Zshot dùng cấu hình riêng (`zshot.ini`) và mã nhận diện riêng, nên **chạy song song với Flameshot** mà không ảnh hưởng nhau.
 
-## Build trên Windows (MSYS2 / MinGW)
+## Cài đặt
+
+Tải bản mới nhất ở trang **[Releases](https://github.com/locphamnguyen/Zshot/releases/latest)**.
+
+### Windows 10/11
+
+| Gói | Dùng khi |
+|---|---|
+| `Zshot-<phiên bản>-win64.msi` | Cài đặt bình thường: có shortcut Start Menu / Desktop, gỡ trong Settings › Apps. |
+| `zshot-<phiên bản>-win64.zip` | Bản portable: giải nén rồi chạy `zshot.exe`, cấu hình nằm cạnh file chạy. |
+
+Bộ cài chưa được ký số. Nếu Windows SmartScreen cảnh báo, bấm **More info › Run anyway**.
+
+### macOS 14 trở lên
+
+| Gói | Máy |
+|---|---|
+| `Zshot-<phiên bản>-arm64.dmg` | Mac chip Apple (M1, M2, M3, M4…) |
+| `Zshot-<phiên bản>-intel.dmg` | Mac chip Intel |
+
+Mở file `.dmg`, kéo **Zshot** vào **Applications**. Ứng dụng chưa được Apple công chứng (notarize), nên lần đầu macOS sẽ chặn. Có hai cách mở:
+
+- Chuột phải vào Zshot trong Applications › **Open** › **Open**.
+- Hoặc chạy lệnh: `xattr -dr com.apple.quarantine /Applications/zshot.app`
+
+Zshot cần quyền **Screen Recording** để chụp: System Settings › Privacy & Security › Screen Recording › bật Zshot.
+
+### Dòng lệnh
+
+```shell
+zshot gui                     # chọn vùng để chụp
+zshot gui --background        # chụp rồi đặt lên nền đã cấu hình
+zshot full --background -c    # chụp toàn màn hình, thêm nền, chép vào clipboard
+zshot config                  # mở cài đặt
+```
+
+### Tự build
+
+**Windows (MSYS2 / MinGW)**
 
 ```shell
 pacman -S mingw-w64-ucrt-x86_64-{gcc,cmake,ninja,qt6-base,qt6-svg,qt6-tools,qt6-imageformats}
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build --target flameshot
-# file chạy: build/src/zshot.exe
+cmake --build build --target flameshot      # ra build/src/zshot.exe
 ```
 
-Build bằng MSVC và trên Linux/macOS giống Flameshot, xem phần tài liệu gốc bên dưới.
+**macOS (Homebrew)**
+
+```shell
+brew install qt@6 cmake ninja
+cmake -S . -B build -G Ninja -DQt6_DIR="$(brew --prefix qt@6)/lib/cmake/Qt6"
+cmake --build build && cmake --build build --target create_dmg
+```
+
+Bộ cài chính thức được GitHub Actions build: Windows bằng MSVC (`.github/workflows/Windows-pack.yml`), macOS cho cả chip Apple lẫn Intel (`.github/workflows/MacOS-pack.yml`). Mỗi tag `v*` tự đính kèm bộ cài vào Releases.
+
+## Banner liên hệ
+
+Trong các cửa sổ Cài đặt, Làm đẹp nền và Launcher có một dải chữ chạy giới thiệu dịch vụ tư vấn, custom tính năng và triển khai Zshot cho doanh nghiệp ([locnguyendata.com](https://locnguyendata.com)). Đây là phần ghi công tác giả của Zshot, theo điều khoản bổ sung trong [`NOTICE`](NOTICE). Doanh nghiệp cần bản không có banner, xin liên hệ **locnt@locnguyendata.com** để nhận khoá bản quyền thương mại.
 
 ## Giấy phép
 
-Zshot là phần mềm tự do theo giấy phép GPLv3, dựa trên mã nguồn Flameshot.
-Ảnh nền đóng gói theo [Unsplash License](https://unsplash.com/license), danh sách tác giả ở `data/backgrounds/README.md`.
-Mẫu màu chuyển phỏng theo [beautiFULLshot](https://github.com/itsddvn/beautiFULLshot) (MIT).
+- **Mã nguồn**: [GNU General Public License v3](LICENSE), cùng giấy phép với Flameshot. Bản quyền phần gốc thuộc Alejandro Sirgo Rica và cộng đồng Flameshot. Bản quyền phần bổ sung của Zshot thuộc Nguyễn Tiến Lộc. Điều khoản ghi công và tên thương hiệu xem [`NOTICE`](NOTICE).
+- **Ảnh nền đóng gói**: [Unsplash License](https://unsplash.com/license), danh sách tác giả ở [`data/backgrounds/README.md`](data/backgrounds/README.md).
+- **Mẫu màu chuyển sắc**: phỏng theo [beautiFULLshot](https://github.com/itsddvn/beautiFULLshot) (MIT).
+- **Icon công cụ**: Material Design Icons (Apache 2.0), như Flameshot.
 
 ---
 
