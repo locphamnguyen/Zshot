@@ -1,4 +1,55 @@
 <div align="center">
+  <img src="data/img/app/zshot.png" alt="Zshot" width="120" />
+  <h1>Zshot</h1>
+  <p><b>Chụp màn hình, vẽ chú thích và làm đẹp ảnh chụp chỉ trong vài giây.</b></p>
+  <p>Fork của <a href="https://github.com/flameshot-org/flameshot">Flameshot</a> · giấy phép GPLv3 · giao diện theo bộ nhận diện ZCRM</p>
+</div>
+
+## Zshot có gì
+
+- **Mọi công cụ của Flameshot**: chọn vùng, bút, mũi tên, khung, chữ, làm mờ, đánh số, ghim ảnh lên màn hình, sao chép, lưu.
+- **Làm đẹp nền** (nút trên thanh công cụ hoặc phím **G**): đặt ảnh chụp lên nền và xem trước ngay.
+  - **Hình nền**: 36 ảnh có sẵn đóng gói trong phần mềm (Unsplash, xem `data/backgrounds/README.md`).
+  - **Chuyển sắc**: 24 mẫu màu chuyển.
+  - **Màu**: màu đơn, màu tự động lấy từ mép ảnh, hoặc nền trong suốt.
+  - **Ảnh**: ảnh của bạn, thêm từ máy tính hoặc kéo thả vào, được giữ lại trong thư viện.
+  - **Tỉ lệ khung**: Auto, 1:1, 4:5, 9:16, 16:9, 2:1, 1.91:1, 3:4.
+  - **Điều chỉnh**: lề, bo góc, đổ bóng, làm mờ nền, viền.
+- **Tự thêm nền cho mọi ảnh chụp** (Cài đặt › Nền ảnh) hoặc dùng tham số `--background`:
+
+  ```shell
+  zshot full --background -c
+  zshot gui --background
+  ```
+
+- **Làm đẹp ảnh trong clipboard** từ menu khay hệ thống, kể cả ảnh chụp bằng phần mềm khác.
+- **Phím tắt mới**: **G** làm đẹp nền, **N** đánh số, **Shift+G** lấy màu trên màn hình.
+- Giao diện tiếng Việt mặc định, màu và kiểu chữ theo ZCRM.
+
+Zshot dùng cấu hình riêng (`zshot.ini`) và mã nhận diện tiến trình riêng, nên chạy song song với Flameshot mà không ảnh hưởng nhau.
+
+## Build trên Windows (MSYS2 / MinGW)
+
+```shell
+pacman -S mingw-w64-ucrt-x86_64-{gcc,cmake,ninja,qt6-base,qt6-svg,qt6-tools,qt6-imageformats}
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build --target flameshot
+# file chạy: build/src/zshot.exe
+```
+
+Build bằng MSVC và trên Linux/macOS giống Flameshot, xem phần tài liệu gốc bên dưới.
+
+## Giấy phép
+
+Zshot là phần mềm tự do theo giấy phép GPLv3, dựa trên mã nguồn Flameshot.
+Ảnh nền đóng gói theo [Unsplash License](https://unsplash.com/license), danh sách tác giả ở `data/backgrounds/README.md`.
+Mẫu màu chuyển phỏng theo [beautiFULLshot](https://github.com/itsddvn/beautiFULLshot) (MIT).
+
+---
+
+# Tài liệu gốc của Flameshot
+
+<div align="center">
   <p>
     <h1>
       <a href="https://github.com/flameshot-org/flameshot">
