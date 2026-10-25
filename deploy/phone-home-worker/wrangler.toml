@@ -1,0 +1,19 @@
+# Cloudflare Worker nhận gọi-về (phone-home) từ các bản Zshot đã cài.
+# Deploy: xem README.md cùng thư mục.
+name = "zshot-phone-home"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# Route cụ thể hơn `updater.zopen.vn/*` (worker ZaloCRM) ⇒ Cloudflare đưa /zshot/* về worker này.
+# Bản cài gọi: https://updater.zopen.vn/zshot/v1/ping   (src/core/phonehome.cpp → PHONE_HOME_URL)
+routes = [
+  { pattern = "updater.zopen.vn/zshot/*", zone_name = "zopen.vn" },
+]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "zshot-phone-home"
+# database_id = "<điền sau khi `wrangler d1 create zshot-phone-home`>"
+
+[vars]
+# Khoá quản trị cho /zshot/v1/admin/* — đặt bằng `wrangler secret put ADMIN_TOKEN`, KHÔNG ghi ở đây.

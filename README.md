@@ -92,13 +92,20 @@ cmake --build build && cmake --build build --target create_dmg
 
 Bộ cài chính thức được GitHub Actions build: Windows bằng MSVC (`.github/workflows/Windows-pack.yml`), macOS cho cả chip Apple lẫn Intel (`.github/workflows/MacOS-pack.yml`). Mỗi tag `v*` tự đính kèm bộ cài vào Releases.
 
-## Banner liên hệ
+## Thông báo cập nhật (gọi về máy chủ)
 
-Trong các cửa sổ Cài đặt, Làm đẹp nền và Launcher có một dải chữ chạy giới thiệu dịch vụ tư vấn, custom tính năng và triển khai Zshot cho doanh nghiệp ([locnguyendata.com](https://locnguyendata.com)). Đây là phần ghi công tác giả của Zshot, theo điều khoản bổ sung trong [`NOTICE`](NOTICE). Doanh nghiệp cần bản không có banner, xin liên hệ **locnt@locnguyendata.com** để nhận khoá bản quyền thương mại.
+Giống ZaloCRM, tiến trình Zshot chạy ở khay hệ thống **gọi về** `https://updater.zopen.vn/zshot/v1/ping` 30 giây sau khi khởi động, rồi mỗi 12 giờ một lần.
+
+- **Gửi đi đúng hai trường** `{ instanceId, version }`. `instanceId` là một mã ngẫu nhiên sinh ra một lần cho mỗi bản cài, lưu trong `zshot.ini`. Không gửi ảnh chụp, tên máy, tài khoản, địa chỉ IP hay bất kỳ dữ liệu nào khác. Máy chủ cũng không ghi IP.
+- **Mục đích**: biết có bao nhiêu bản Zshot đang được dùng, ở phiên bản nào, và gửi **thông báo** (có bản mới, cảnh báo bảo mật). Thông báo hiện thành một dải ở đầu các cửa sổ Cài đặt, Làm đẹp nền và Launcher; bấm ✕ để ẩn.
+- **Không làm phiền**: không có mạng hoặc máy chủ lỗi thì Zshot bỏ qua, không báo gì.
+- Mã nguồn hai phía công khai: phía app ở [`src/core/phonehome.cpp`](src/core/phonehome.cpp), phía máy chủ ở [`deploy/phone-home-worker`](deploy/phone-home-worker).
+
+Cần tư vấn, custom tính năng hoặc triển khai Zshot cho doanh nghiệp: [locnguyendata.com](https://locnguyendata.com/?utm_source=github&utm_medium=readme&utm_campaign=service_promo&utm_content=zshot_readme) · locnt@locnguyendata.com
 
 ## Giấy phép
 
-- **Mã nguồn**: [GNU General Public License v3](LICENSE), cùng giấy phép với Flameshot. Bản quyền phần gốc thuộc Alejandro Sirgo Rica và cộng đồng Flameshot. Bản quyền phần bổ sung của Zshot thuộc Nguyễn Tiến Lộc. Điều khoản ghi công và tên thương hiệu xem [`NOTICE`](NOTICE).
+- **Mã nguồn**: [GNU General Public License v3](LICENSE), cùng giấy phép với Flameshot. Bản quyền phần gốc thuộc Alejandro Sirgo Rica và cộng đồng Flameshot. Bản quyền phần bổ sung của Zshot thuộc Nguyễn Tiến Lộc. Tên và logo Zshot xem [`NOTICE`](NOTICE).
 - **Ảnh nền đóng gói**: [Unsplash License](https://unsplash.com/license), danh sách tác giả ở [`data/backgrounds/README.md`](data/backgrounds/README.md).
 - **Mẫu màu chuyển sắc**: phỏng theo [beautiFULLshot](https://github.com/itsddvn/beautiFULLshot) (MIT).
 - **Icon công cụ**: Material Design Icons (Apache 2.0), như Flameshot.

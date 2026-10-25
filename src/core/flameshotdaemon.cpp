@@ -1,5 +1,6 @@
 #include "flameshotdaemon.h"
 #include "core/flameshot.h"
+#include "core/phonehome.h"
 #include "tools/pin/pinwidget.h"
 #include "utils/abstractlogger.h"
 #include "utils/confighandler.h"
@@ -128,6 +129,8 @@ void FlameshotDaemon::start()
         // Tray icon needs FlameshotDaemon::instance() to be non-null
         m_instance->initTrayIcon();
         qApp->setQuitOnLastWindowClosed(false);
+        // Only the long running tray process phones home
+        PhoneHome::instance()->start();
     }
 }
 

@@ -13,7 +13,7 @@
 #include "utils/globalvalues.h"
 #include "utils/pathinfo.h"
 #include "utils/zshottheme.h"
-#include "widgets/attributionbanner.h"
+#include "widgets/announcementbanner.h"
 
 #include <QApplication>
 #include <QDialogButtonBox>
@@ -78,8 +78,7 @@ ConfigWindow::ConfigWindow(QWidget* parent)
     auto* contentLayout = new QVBoxLayout(content);
     contentLayout->setContentsMargins(28, 22, 28, 16);
     contentLayout->setSpacing(12);
-    contentLayout->addWidget(
-      new AttributionBanner(QStringLiteral("settings"), content));
+    contentLayout->addWidget(new AnnouncementBanner(content));
     m_pageTitle = new QLabel(content);
     m_pageTitle->setProperty("zsRole", "heading");
     contentLayout->addWidget(m_pageTitle);

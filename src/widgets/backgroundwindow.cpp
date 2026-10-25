@@ -5,7 +5,7 @@
 #include "core/flameshot.h"
 #include "utils/globalvalues.h"
 #include "utils/zshottheme.h"
-#include "widgets/attributionbanner.h"
+#include "widgets/announcementbanner.h"
 #include "widgets/backgroundeditor.h"
 
 #include <QCloseEvent>
@@ -159,7 +159,7 @@ BackgroundWindow::BackgroundWindow(const QPixmap& capture,
     auto* layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
-    layout->addWidget(new AttributionBanner(QStringLiteral("editor"), this));
+    layout->addWidget(new AnnouncementBanner(this));
     layout->addLayout(row, 1);
 
     m_renderTimer.setSingleShot(true);

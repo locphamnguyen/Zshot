@@ -1,6 +1,7 @@
 target_sources(flameshot PRIVATE
     flameshot.h
     flameshotdaemon.h
+    phonehome.h
     qguiappcurrentscreen.h
 )
 
@@ -8,6 +9,7 @@ target_sources(flameshot PRIVATE
     capturerequest.cpp
     flameshot.cpp
     flameshotdaemon.cpp
+    phonehome.cpp
     qguiappcurrentscreen.cpp
 )
 

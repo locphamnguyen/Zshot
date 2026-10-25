@@ -126,8 +126,11 @@ static QMap<class QString, QSharedPointer<ValueHandler>>
     OPTION("backgroundBorderWidth"       ,BoundedInt         ( 0, 50, 0      )),
     OPTION("backgroundBorderColor"       ,Color              ( Qt::black     )),
     OPTION("backgroundAspectRatio"       ,String             ( "auto"        )),
-    // Commercial license key that hides the attribution banner (see NOTICE)
-    OPTION("friends"                     ,String             ( ""            )),
+    // Phone home (src/core/phonehome.cpp): this copy's id, the last
+    // announcement of the central page and the one the user closed
+    OPTION("instanceId"                  ,String             ( ""            )),
+    OPTION("announcement"                ,String             ( ""            )),
+    OPTION("announcementDismissed"       ,String             ( ""            )),
     // Others
     // drawThickness shared by Pencil, Line, Arrow, Rectangular Selection, Circle
     OPTION("drawThickness"               ,LowerBoundedInt    ( 1, 3          )),

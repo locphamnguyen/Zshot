@@ -3580,4 +3580,19 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
         <translation>Ảnh: %1 / Unsplash</translation>
     </message>
 </context>
+<context>
+    <name>AnnouncementBanner</name>
+    <message>
+        <source>Announcement</source>
+        <translation>Thông báo</translation>
+    </message>
+    <message>
+        <source>Close this announcement</source>
+        <translation>Đóng thông báo này</translation>
+    </message>
+    <message>
+        <source>View details</source>
+        <translation>Xem chi tiết</translation>
+    </message>
+</context>
 </TS>
