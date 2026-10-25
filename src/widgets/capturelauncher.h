@@ -12,6 +12,8 @@ class CaptureLauncher;
 }
 QT_END_NAMESPACE
 
+class QCheckBox;
+
 class CaptureLauncher : public QDialog
 {
     Q_OBJECT
@@ -21,6 +23,7 @@ public:
     ~CaptureLauncher();
 
 private:
+    QCheckBox* m_beautify;
     Ui::CaptureLauncher* ui;
     QTimer* m_countdownTimer;
     int m_remainingSeconds;

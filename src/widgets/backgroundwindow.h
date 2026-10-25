@@ -43,6 +43,7 @@ private:
 
     BackgroundEditor* m_editor;
     QLabel* m_preview;
+    QLabel* m_info;
     QTimer m_renderTimer;
     QTimer m_saveTimer;
 };

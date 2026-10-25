@@ -238,8 +238,7 @@ ConfigHandler::ConfigHandler()
                qApp->organizationName(),
                qApp->applicationName())
 #else
-  : m_settings(qApp->applicationDirPath() + "/zshot.ini",
-               QSettings::IniFormat)
+  : m_settings(qApp->applicationDirPath() + "/zshot.ini", QSettings::IniFormat)
 #endif
 {
     static bool firstInitialization = true;

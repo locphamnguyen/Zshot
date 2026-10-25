@@ -4,6 +4,7 @@
 #include "backgroundwindow.h"
 #include "core/flameshot.h"
 #include "utils/globalvalues.h"
+#include "utils/zshottheme.h"
 #include "widgets/backgroundeditor.h"
 
 #include <QCloseEvent>
@@ -18,8 +19,22 @@
 namespace {
 constexpr int RENDER_DELAY_MS = 40;
 constexpr int SAVE_DELAY_MS = 300;
+constexpr int SIDE_WIDTH = 348;
 constexpr QSize MIN_PREVIEW_SIZE(480, 320);
-constexpr QSize WINDOW_SIZE(1100, 700);
+constexpr QSize WINDOW_SIZE(1280, 800);
+
+QPushButton* actionButton(const QString& text,
+                          const QString& icon,
+                          bool primary,
+                          QWidget* parent)
+{
+    auto* button = new QPushButton(text, parent);
+    button->setProperty("zsVariant", primary ? "primary" : "outlined");
+    button->setIcon(ZshotTheme::icon(
+      icon, primary ? QColor(Qt::white) : ZshotTheme::Color::ink2, 16));
+    button->setCursor(Qt::PointingHandCursor);
+    return button;
+}
 } // namespace
 
 BackgroundWindow::BackgroundWindow(const QPixmap& capture,
@@ -32,61 +47,114 @@ BackgroundWindow::BackgroundWindow(const QPixmap& capture,
   , m_request(request)
   , m_editor(new BackgroundEditor(this))
   , m_preview(new QLabel(this))
+  , m_info(new QLabel(this))
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowFlags(Qt::Window);
     setWindowIcon(QIcon(GlobalValues::iconPath()));
-    setWindowTitle(tr("Background"));
+    setWindowTitle(tr("Zshot - Beautify capture"));
+    setStyleSheet(ZshotTheme::styleSheet());
     resize(WINDOW_SIZE);
 
+    // Preview on the left
+    auto* canvas = new QWidget(this);
+    canvas->setProperty("zsSurface", "canvas");
+    canvas->setAttribute(Qt::WA_StyledBackground);
+    auto* canvasLayout = new QVBoxLayout(canvas);
+    canvasLayout->setContentsMargins(32, 32, 32, 20);
+    canvasLayout->setSpacing(14);
     m_preview->setAlignment(Qt::AlignCenter);
     m_preview->setMinimumSize(MIN_PREVIEW_SIZE);
     // Keep the label from growing with the pixmap it shows
     m_preview->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    m_info->setProperty("zsRole", "pill");
+    canvasLayout->addWidget(m_preview, 1);
+    canvasLayout->addWidget(m_info, 0, Qt::AlignHCenter);
 
-    auto* scroll = new QScrollArea(this);
-    scroll->setWidget(m_editor);
+    // Settings on the right
+    auto* side = new QWidget(this);
+    side->setProperty("zsSurface", "side");
+    side->setAttribute(Qt::WA_StyledBackground);
+    side->setFixedWidth(SIDE_WIDTH);
+    auto* sideLayout = new QVBoxLayout(side);
+    sideLayout->setContentsMargins(0, 0, 0, 0);
+    sideLayout->setSpacing(0);
+    auto* scroll = new QScrollArea(side);
+    auto* scrollBody = new QWidget(scroll);
+    auto* scrollLayout = new QVBoxLayout(scrollBody);
+    scrollLayout->setContentsMargins(16, 16, 16, 16);
+    scrollLayout->addWidget(m_editor);
+    scroll->setWidget(scrollBody);
     scroll->setWidgetResizable(true);
     scroll->setFrameShape(QFrame::NoFrame);
-    scroll->setMinimumWidth(m_editor->sizeHint().width() + 24);
     scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    sideLayout->addWidget(scroll, 1);
 
+    auto* footer = new QWidget(side);
+    footer->setProperty("zsSurface", "footer");
+    footer->setAttribute(Qt::WA_StyledBackground);
+    auto* footerLayout = new QVBoxLayout(footer);
+    footerLayout->setContentsMargins(16, 12, 16, 14);
+    footerLayout->setSpacing(8);
     auto* buttons = new QHBoxLayout();
-    auto addButton = [&](const QString& text, auto slot) {
-        auto* button = new QPushButton(text, this);
-        connect(button, &QPushButton::clicked, this, slot);
-        buttons->addWidget(button);
-        return button;
-    };
+    buttons->setSpacing(8);
+    auto* hint = new QLabel(footer);
+    hint->setProperty("zsRole", "muted");
     using CR = CaptureRequest;
     const auto presetTasks =
       CR::COPY | CR::SAVE | CR::PIN | CR::UPLOAD | CR::PRINT_RAW;
     if (m_request.tasks() & presetTasks) {
         // Tasks were requested on the command line, just run them
-        addButton(tr("Accept"), [this]() {
+        auto* accept =
+          actionButton(tr("Done"), QStringLiteral("accept"), true, footer);
+        connect(accept, &QPushButton::clicked, this, [this]() {
             exportWith(CR::NO_TASK);
-        })->setDefault(true);
+        });
+        accept->setDefault(true);
+        buttons->addWidget(accept, 1);
+        hint->setText(ZshotTheme::kbd(QStringLiteral("Esc")) +
+                      QStringLiteral(" ") + tr("close"));
     } else {
-        addButton(tr("Copy"), [this]() {
+        auto* pin =
+          actionButton(tr("Pin"), QStringLiteral("pin"), false, footer);
+        auto* save = actionButton(
+          tr("Save"), QStringLiteral("content-save"), false, footer);
+        auto* copy = actionButton(
+          tr("Copy"), QStringLiteral("content-copy"), true, footer);
+        connect(
+          pin, &QPushButton::clicked, this, [this]() { exportWith(CR::PIN); });
+        connect(save, &QPushButton::clicked, this, [this]() {
+            exportWith(CR::SAVE);
+        });
+        connect(copy, &QPushButton::clicked, this, [this]() {
             exportWith(CR::COPY);
-        })->setDefault(true);
-        addButton(tr("Save"), [this]() { exportWith(CR::SAVE); });
-        addButton(tr("Pin"), [this]() { exportWith(CR::PIN); });
+        });
+        copy->setDefault(true);
+        buttons->addWidget(pin);
+        buttons->addWidget(save);
+        buttons->addWidget(copy, 1);
         new QShortcut(
           QKeySequence::Copy, this, [this]() { exportWith(CR::COPY); });
         new QShortcut(
           QKeySequence::Save, this, [this]() { exportWith(CR::SAVE); });
+        hint->setText(QStringLiteral("%1 %2 &nbsp; %3 %4 &nbsp; %5 %6")
+                        .arg(ZshotTheme::kbd(QStringLiteral("Ctrl+C")),
+                             tr("copy"),
+                             ZshotTheme::kbd(QStringLiteral("Ctrl+S")),
+                             tr("save"),
+                             ZshotTheme::kbd(QStringLiteral("Esc")),
+                             tr("close")));
     }
-    addButton(tr("Close"), [this]() { close(); });
     new QShortcut(Qt::Key_Escape, this, [this]() { close(); });
-
-    auto* side = new QVBoxLayout();
-    side->addWidget(scroll);
-    side->addLayout(buttons);
+    footerLayout->addLayout(buttons);
+    footerLayout->addWidget(hint);
+    sideLayout->addWidget(footer);
 
     auto* layout = new QHBoxLayout(this);
-    layout->addWidget(m_preview, 1);
-    layout->addLayout(side);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
+    layout->addWidget(canvas, 1);
+    layout->addWidget(side);
 
     m_renderTimer.setSingleShot(true);
     m_renderTimer.setInterval(RENDER_DELAY_MS);
@@ -109,7 +177,8 @@ BackgroundWindow::BackgroundWindow(const QPixmap& capture,
 void BackgroundWindow::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
-    updatePreview();
+    // the preview label gets its new size once the layout ran
+    QTimer::singleShot(0, this, &BackgroundWindow::updatePreview);
 }
 
 void BackgroundWindow::closeEvent(QCloseEvent* event)
@@ -120,7 +189,7 @@ void BackgroundWindow::closeEvent(QCloseEvent* event)
     }
     if (!m_exported) {
         Flameshot::instance()->setExternalWidget(false);
-        emit Flameshot::instance() -> captureFailed();
+        emit Flameshot::instance()->captureFailed();
     }
     QWidget::closeEvent(event);
 }
@@ -141,6 +210,11 @@ void BackgroundWindow::updatePreview()
       m_preview->size() * dpr, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     preview.setDevicePixelRatio(dpr);
     m_preview->setPixmap(preview);
+    const int percent = qRound(100.0 * preview.width() / m_result.width());
+    m_info->setText(tr("%1 x %2 px - fit - %3%")
+                      .arg(m_result.width())
+                      .arg(m_result.height())
+                      .arg(percent));
 }
 
 void BackgroundWindow::exportWith(CaptureRequest::ExportTask task)

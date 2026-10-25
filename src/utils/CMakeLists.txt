@@ -14,6 +14,7 @@ target_sources(
   PRIVATE abstractlogger.cpp
           backgroundlibrary.cpp
           backgroundrenderer.cpp
+          zshottheme.cpp
           filenamehandler.cpp
           screengrabber.cpp
           monitorpreview.cpp

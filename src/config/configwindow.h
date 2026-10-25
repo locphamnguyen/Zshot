@@ -7,6 +7,8 @@
 
 class BackgroundConf;
 class FileNameEditor;
+class QLabel;
+class QListWidget;
 class ShortcutsWidget;
 class GeneralConf;
 class QFileSystemWatcher;
@@ -27,6 +29,8 @@ protected:
 
 private:
     QTabWidget* m_tabWidget;
+    QListWidget* m_nav;
+    QLabel* m_pageTitle;
 
     FileNameEditor* m_filenameEditor;
     QWidget* m_filenameEditorTab;

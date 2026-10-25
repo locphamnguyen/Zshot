@@ -103,10 +103,8 @@ bool removeImage(const QString& path)
 QIcon thumbnail(const QString& path, const QSize& size)
 {
     static QHash<QString, QIcon> cache;
-    const QString key = QStringLiteral("%1@%2x%3")
-                          .arg(path)
-                          .arg(size.width())
-                          .arg(size.height());
+    const QString key =
+      QStringLiteral("%1@%2x%3").arg(path).arg(size.width()).arg(size.height());
     auto it = cache.constFind(key);
     if (it != cache.constEnd()) {
         return *it;

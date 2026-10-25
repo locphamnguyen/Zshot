@@ -5,16 +5,19 @@
 #include "utils/backgroundrenderer.h"
 #include "utils/confighandler.h"
 #include "widgets/backgroundeditor.h"
+#include "widgets/toggleswitch.h"
 
-#include <QCheckBox>
-#include <QGroupBox>
+#include <QFrame>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QPainter>
+#include <QScrollArea>
 #include <QVBoxLayout>
 
 namespace {
 constexpr int SAVE_DELAY_MS = 300;
-constexpr QSize PREVIEW_SIZE(360, 220);
+constexpr int EDITOR_WIDTH = 330;
+constexpr QSize PREVIEW_SIZE(330, 214);
 
 // A fake application window used to preview the background settings
 QPixmap sampleCapture()
@@ -30,9 +33,11 @@ QPixmap sampleCapture()
         painter.setBrush(dots[i]);
         painter.drawEllipse(QPoint(20 + i * 20, 18), 6, 6);
     }
+    painter.setBrush(QColor(23, 134, 190));
+    painter.drawRoundedRect(30, 62, 190, 14, 7, 7);
     painter.setBrush(QColor(210, 210, 215));
-    for (int i = 0; i < 6; ++i) {
-        painter.drawRoundedRect(30, 70 + i * 34, i % 2 ? 300 : 420, 14, 7, 7);
+    for (int i = 0; i < 5; ++i) {
+        painter.drawRoundedRect(30, 100 + i * 34, i % 2 ? 300 : 420, 14, 7, 7);
     }
     return pixmap;
 }
@@ -40,29 +45,69 @@ QPixmap sampleCapture()
 
 BackgroundConf::BackgroundConf(QWidget* parent)
   : QWidget(parent)
-  , m_autoApply(new QCheckBox(
-      tr("Put every capture on this background when it is exported"),
-      this))
+  , m_autoApply(new ToggleSwitch(this))
   , m_editor(new BackgroundEditor(this))
   , m_preview(new QLabel(this))
 {
     auto* layout = new QVBoxLayout(this);
-    m_autoApply->setToolTip(
-      tr("Otherwise use the Background button of the capture toolbar or the "
-         "--background command line option"));
-    layout->addWidget(m_autoApply);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(14);
 
-    auto* settingsBox = new QGroupBox(tr("Background settings"), this);
-    auto* settingsLayout = new QVBoxLayout(settingsBox);
-    settingsLayout->addWidget(m_editor);
-    layout->addWidget(settingsBox);
+    // "Put every capture on a background" switch
+    auto* autoCard = new QFrame(this);
+    autoCard->setObjectName(QStringLiteral("zsAutoApply"));
+    autoCard->setStyleSheet(QStringLiteral(
+      "#zsAutoApply { background: #F2F8FC; border: 1px solid #CFE6F3; "
+      "border-radius: 10px; } #zsAutoApply QLabel { background: transparent; "
+      "}"));
+    auto* autoLayout = new QHBoxLayout(autoCard);
+    autoLayout->setContentsMargins(16, 12, 16, 12);
+    auto* texts = new QVBoxLayout();
+    texts->setSpacing(2);
+    auto* title =
+      new QLabel(tr("Put every capture on this background"), autoCard);
+    title->setStyleSheet(QStringLiteral("font-weight: 600;"));
+    auto* hint = new QLabel(
+      tr("When off, use the Beautify button (G) of the capture toolbar or the "
+         "--background option"),
+      autoCard);
+    hint->setProperty("zsRole", "muted");
+    hint->setWordWrap(true);
+    texts->addWidget(title);
+    texts->addWidget(hint);
+    autoLayout->addLayout(texts, 1);
+    m_autoApply->setAccessibleName(title->text());
+    autoLayout->addWidget(m_autoApply);
+    layout->addWidget(autoCard);
 
+    // Editor on the left, preview on the right
+    auto* columns = new QHBoxLayout();
+    columns->setSpacing(20);
+    auto* scroll = new QScrollArea(this);
+    auto* body = new QWidget(scroll);
+    auto* bodyLayout = new QVBoxLayout(body);
+    bodyLayout->setContentsMargins(0, 0, 8, 0);
+    bodyLayout->addWidget(m_editor);
+    scroll->setWidget(body);
+    scroll->setWidgetResizable(true);
+    scroll->setFrameShape(QFrame::NoFrame);
+    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scroll->setFixedWidth(EDITOR_WIDTH + 18);
+    columns->addWidget(scroll);
+
+    auto* right = new QVBoxLayout();
+    right->setSpacing(8);
+    auto* previewTitle = new QLabel(tr("Preview"), this);
+    previewTitle->setProperty("zsRole", "muted");
+    m_preview->setFixedSize(PREVIEW_SIZE);
     m_preview->setAlignment(Qt::AlignCenter);
-    m_preview->setMinimumSize(PREVIEW_SIZE);
-    layout->addWidget(m_preview);
-    layout->addStretch();
+    right->addWidget(previewTitle);
+    right->addWidget(m_preview);
+    right->addStretch();
+    columns->addLayout(right, 1);
+    layout->addLayout(columns, 1);
 
-    connect(m_autoApply, &QCheckBox::clicked, this, [](bool checked) {
+    connect(m_autoApply, &ToggleSwitch::clicked, this, [](bool checked) {
         ConfigHandler().setBackgroundAutoApply(checked);
     });
     // Sliders emit many changes, only write the config once they settle
@@ -93,7 +138,11 @@ void BackgroundConf::updateComponents()
 void BackgroundConf::updatePreview()
 {
     static const QPixmap sample = sampleCapture();
-    QPixmap preview = BackgroundRenderer::render(sample, m_editor->settings());
-    m_preview->setPixmap(preview.scaled(
-      PREVIEW_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    const qreal dpr = devicePixelRatioF();
+    QPixmap preview = BackgroundRenderer::render(sample, m_editor->settings())
+                        .scaled(PREVIEW_SIZE * dpr,
+                                Qt::KeepAspectRatio,
+                                Qt::SmoothTransformation);
+    preview.setDevicePixelRatio(dpr);
+    m_preview->setPixmap(preview);
 }

@@ -363,8 +363,7 @@ bool ShortcutsWidget::isMsScreenclipRegistered()
       "HKEY_LOCAL_MACHINE\\SOFTWARE\\RegisteredApplications",
       QSettings::NativeFormat);
     value = RegisteredApplications.value("Zshot", "").toString();
-    if (value.toLower() !=
-        QString("SOFTWARE\\Zshot\\Capabilities").toLower())
+    if (value.toLower() != QString("SOFTWARE\\Zshot\\Capabilities").toLower())
         return false;
 
     QSettings FlameshotShellCmd(
@@ -395,8 +394,7 @@ bool ShortcutsWidget::registerMsScreenclip()
     QSettings RegisteredApplications(
       "HKEY_LOCAL_MACHINE\\SOFTWARE\\RegisteredApplications",
       QSettings::NativeFormat);
-    RegisteredApplications.setValue("Zshot",
-                                    "SOFTWARE\\Zshot\\Capabilities");
+    RegisteredApplications.setValue("Zshot", "SOFTWARE\\Zshot\\Capabilities");
     RegisteredApplications.sync();
     if (QSettings::AccessError == RegisteredApplications.status()) {
         return false;

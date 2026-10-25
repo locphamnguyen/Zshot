@@ -12,6 +12,7 @@
 #include "utils/confighandler.h"
 #include "utils/globalvalues.h"
 #include "utils/pathinfo.h"
+#include "utils/zshottheme.h"
 
 #include <QApplication>
 #include <QDialogButtonBox>
@@ -19,6 +20,7 @@
 #include <QIcon>
 #include <QKeyEvent>
 #include <QLabel>
+#include <QListWidget>
 #include <QSizePolicy>
 #include <QTabBar>
 #include <QTextStream>
@@ -29,16 +31,61 @@
 ConfigWindow::ConfigWindow(QWidget* parent)
   : QWidget(parent)
 {
+    // Zshot layout: side navigation on the left, the pages of a QTabWidget
+    // (tab bar hidden) on the right
+    setStyleSheet(ZshotTheme::styleSheet());
+    resize(980, 680);
+    auto* layout = new QHBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
+
+    auto* nav = new QWidget(this);
+    nav->setProperty("zsSurface", "nav");
+    nav->setAttribute(Qt::WA_StyledBackground);
+    nav->setFixedWidth(220);
+    auto* navLayout = new QVBoxLayout(nav);
+    navLayout->setContentsMargins(12, 16, 12, 14);
+    navLayout->setSpacing(2);
+    auto* brand = new QHBoxLayout();
+    brand->setContentsMargins(6, 2, 6, 14);
+    brand->setSpacing(10);
+    auto* logo = new QLabel(nav);
+    logo->setPixmap(QIcon(GlobalValues::iconPath()).pixmap(30, 30));
+    auto* name = new QLabel(
+      QStringLiteral("<span style=\"font-size:17px; font-weight:800; "
+                     "color:#0F4A60;\">Z<span style=\"color:#1786BE;\">shot"
+                     "</span></span><br><span style=\"font-size:11px; "
+                     "color:#6B7488;\">%1</span>")
+        .arg(tr("version %1").arg(QStringLiteral(APP_VERSION))),
+      nav);
+    brand->addWidget(logo);
+    brand->addWidget(name, 1);
+    navLayout->addLayout(brand);
+    m_nav = new QListWidget(nav);
+    m_nav->setProperty("zsNav", true);
+    m_nav->setIconSize(QSize(18, 18));
+    m_nav->setFrameShape(QFrame::NoFrame);
+    navLayout->addWidget(m_nav, 1);
+    auto* credit = new QLabel(tr("Based on Flameshot - GPLv3"), nav);
+    credit->setProperty("zsRole", "muted");
+    navLayout->addWidget(credit);
+    layout->addWidget(nav);
+
+    auto* content = new QWidget(this);
+    content->setProperty("zsSurface", "content");
+    content->setAttribute(Qt::WA_StyledBackground);
+    auto* contentLayout = new QVBoxLayout(content);
+    contentLayout->setContentsMargins(28, 22, 28, 16);
+    contentLayout->setSpacing(12);
+    m_pageTitle = new QLabel(content);
+    m_pageTitle->setProperty("zsRole", "heading");
+    contentLayout->addWidget(m_pageTitle);
     // We wrap QTabWidget in a QWidget because of a Qt bug
-    auto* layout = new QVBoxLayout(this);
-    m_tabWidget = new QTabWidget(this);
-    m_tabWidget->tabBar()->setUsesScrollButtons(false);
-#if defined(Q_OS_MACOS)
-    // Fix Qt6 macOS bug where tab pane content renders behind the tab bar
-    m_tabWidget->setStyleSheet(
-      "QTabWidget::pane { border-top: 2px solid palette(mid); }");
-#endif
-    layout->addWidget(m_tabWidget);
+    m_tabWidget = new QTabWidget(content);
+    m_tabWidget->tabBar()->hide();
+    m_tabWidget->setDocumentMode(true);
+    contentLayout->addWidget(m_tabWidget, 1);
+    layout->addWidget(content, 1);
 
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowIcon(QIcon(GlobalValues::iconPath()));
@@ -88,8 +135,9 @@ ConfigWindow::ConfigWindow(QWidget* parent)
     auto* backgroundLayout = new QVBoxLayout(m_backgroundTab);
     m_backgroundTab->setLayout(backgroundLayout);
     backgroundLayout->addWidget(m_backgroundConf);
-    m_tabWidget->addTab(
-      m_backgroundTab, QIcon(modifier + "background.svg"), tr("Background"));
+    // after General and Interface, as in the Zshot design
+    m_tabWidget->insertTab(
+      2, m_backgroundTab, QIcon(modifier + "background.svg"), tr("Background"));
 
     // shortcuts
     m_shortcuts = new ShortcutsWidget();
@@ -99,6 +147,27 @@ ConfigWindow::ConfigWindow(QWidget* parent)
     shortcutsLayout->addWidget(m_shortcuts);
     m_tabWidget->addTab(
       m_shortcutsTab, QIcon(modifier + "shortcut.svg"), tr("Shortcuts"));
+
+    // side navigation: one entry per page, icons from the app's set
+    const QStringList navIcons = { QStringLiteral("config"),
+                                   QStringLiteral("graphics"),
+                                   QStringLiteral("background"),
+                                   QStringLiteral("name_edition"),
+                                   QStringLiteral("shortcut") };
+    for (int i = 0; i < m_tabWidget->count(); ++i) {
+        QIcon icon =
+          ZshotTheme::icon(navIcons.value(i), ZshotTheme::Color::ink3, 18);
+        icon.addPixmap(
+          ZshotTheme::icon(navIcons.value(i), ZshotTheme::Color::brandDark, 18)
+            .pixmap(18, 18),
+          QIcon::Selected);
+        m_nav->addItem(new QListWidgetItem(icon, m_tabWidget->tabText(i)));
+    }
+    connect(m_nav, &QListWidget::currentRowChanged, this, [this](int row) {
+        m_tabWidget->setCurrentIndex(row);
+        m_pageTitle->setText(m_tabWidget->tabText(row));
+    });
+    m_nav->setCurrentRow(0);
 
     // connect update sigslots
     connect(this,

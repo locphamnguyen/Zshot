@@ -7,7 +7,7 @@
 #include <QWidget>
 
 class BackgroundEditor;
-class QCheckBox;
+class ToggleSwitch;
 class QLabel;
 
 class BackgroundConf : public QWidget
@@ -22,7 +22,7 @@ public slots:
 private:
     void updatePreview();
 
-    QCheckBox* m_autoApply;
+    ToggleSwitch* m_autoApply;
     BackgroundEditor* m_editor;
     QLabel* m_preview;
     QTimer m_saveTimer;

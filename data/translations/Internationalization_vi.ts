@@ -201,6 +201,14 @@
         <source>WxH+x+y</source>
         <translation>WxH+x+y</translation>
     </message>
+    <message>
+        <source>Open the capture in the background editor</source>
+        <translation>Mở ảnh chụp trong cửa sổ Làm đẹp nền</translation>
+    </message>
+    <message>
+        <source>Put the capture on a background, round its corners and add a shadow before copying or saving it</source>
+        <translation>Thêm nền, bo góc và đổ bóng trước khi sao chép hoặc lưu</translation>
+    </message>
 </context>
 <context>
     <name>CaptureWidget</name>
@@ -271,12 +279,12 @@
     </message>
     <message>
         <location filename="../../src/widgets/capture/capturewidget.cpp" line="777"/>
-        <source>Flameshot has lost focus. Keyboard shortcuts won&apos;t work until you click somewhere.</source>
-        <translation>Flameshot đã mất tiêu điểm. Các phím tắt sẽ không hoạt động cho đến khi bạn nhấp vào đâu đó.</translation>
+        <source>Zshot has lost focus. Keyboard shortcuts won&apos;t work until you click somewhere.</source>
+        <translation>Zshot đã mất tiêu điểm. Các phím tắt sẽ không hoạt động cho đến khi bạn nhấp vào đâu đó.</translation>
     </message>
     <message>
         <location filename="../../src/widgets/capture/capturewidget.cpp" line="783"/>
-        <source>Configuration error resolved. Launch `flameshot gui` again to apply it.</source>
+        <source>Configuration error resolved. Launch `zshot gui` again to apply it.</source>
         <translation>Đã giải quyết lỗi cấu hình. Khởi chạy lại `flameshot gui` để áp dụng.</translation>
     </message>
     <message>
@@ -584,7 +592,7 @@ Press Space to open the side panel.</translation>
 This will NOT prevent flameshot from starting.
 Please solve them manually in the configuration file.</source>
         <translation>Một vài phím tắt đã xảy ra xung đột.
-Điều này KHÔNG ngăn Flameshot khởi động.
+Điều này KHÔNG ngăn Zshot khởi động.
 Vui lòng xử lí chúng thủ công trong tệp cấu hình.</translation>
     </message>
     <message>
@@ -608,7 +616,7 @@ Vui lòng xử lí chúng thủ công trong tệp cấu hình.</translation>
     <message>
         <location filename="../../src/config/configwindow.cpp" line="39"/>
         <source>Configuration</source>
-        <translation>Cấu hình</translation>
+        <translation>Zshot — Cài đặt</translation>
     </message>
     <message>
         <location filename="../../src/config/configwindow.cpp" line="67"/>
@@ -618,7 +626,7 @@ Vui lòng xử lí chúng thủ công trong tệp cấu hình.</translation>
     <message>
         <location filename="../../src/config/configwindow.cpp" line="77"/>
         <source>Filename Editor</source>
-        <translation>Chỉnh sửa tên tệp</translation>
+        <translation>Tên tệp</translation>
     </message>
     <message>
         <location filename="../../src/config/configwindow.cpp" line="58"/>
@@ -639,6 +647,18 @@ Vui lòng xử lí chúng thủ công trong tệp cấu hình.</translation>
         <location filename="../../src/config/configwindow.cpp" line="123"/>
         <source>&lt;b&gt;Configuration file has errors. Resolve them before continuing.&lt;/b&gt;</source>
         <translation>&lt;b&gt;Tệp cấu hình có lỗi. Vui lòng giải quyết chúng trước khi tiếp tục&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation>Nền ảnh</translation>
+    </message>
+    <message>
+        <source>version %1</source>
+        <translation>phiên bản %1</translation>
+    </message>
+    <message>
+        <source>Based on Flameshot - GPLv3</source>
+        <translation>Dựa trên Flameshot · GPLv3</translation>
     </message>
 </context>
 <context>
@@ -994,8 +1014,8 @@ Vui lòng xử lí chúng thủ công trong tệp cấu hình.</translation>
     </message>
     <message>
         <location filename="../../src/config/generalconf.cpp" line="411"/>
-        <source>Allow multiple flameshot GUI instances simultaneously</source>
-        <translation>Cho phép nhiều phiên bản giao diện đồ họa Flameshot chạy đồng thời</translation>
+        <source>Allow multiple zshot GUI instances simultaneously</source>
+        <translation>Cho phép nhiều phiên bản giao diện đồ họa Zshot chạy đồng thời</translation>
     </message>
     <message>
         <source>Automatically close daemon when it is not needed</source>
@@ -1006,8 +1026,8 @@ Vui lòng xử lí chúng thủ công trong tệp cấu hình.</translation>
         <translation type="vanished">Launch at startup</translation>
     </message>
     <message>
-        <source>Launch Flameshot</source>
-        <translation type="vanished">Launch Flameshot</translation>
+        <source>Launch Zshot</source>
+        <translation type="vanished">Launch Zshot</translation>
     </message>
     <message>
         <location filename="../../src/config/generalconf.cpp" line="448"/>
@@ -1097,12 +1117,12 @@ Vui lòng xử lí chúng thủ công trong tệp cấu hình.</translation>
     </message>
     <message>
         <location filename="../../src/config/generalconf.cpp" line="412"/>
-        <source>This allows you to take screenshots of Flameshot itself for example</source>
-        <translation>Cái này cho phép bạn chụp ảnh màn hình của Flameshot chẳng hạn</translation>
+        <source>This allows you to take screenshots of Zshot itself for example</source>
+        <translation>Cái này cho phép bạn chụp ảnh màn hình của Zshot chẳng hạn</translation>
     </message>
     <message>
-        <source>Launch Flameshot daemon when computer is booted</source>
-        <translation type="vanished">Launch Flameshot daemon when computer is booted</translation>
+        <source>Launch Zshot daemon when computer is booted</source>
+        <translation type="vanished">Launch Zshot daemon when computer is booted</translation>
     </message>
     <message>
         <location filename="../../src/config/generalconf.cpp" line="451"/>
@@ -1144,8 +1164,8 @@ Vui lòng xử lí chúng thủ công trong tệp cấu hình.</translation>
     </message>
     <message>
         <location filename="../../src/config/generalconf.cpp" line="437"/>
-        <source>Launch Flameshot daemon (background process) when computer is booted</source>
-        <translation>Khởi chạy Flameshot daemon (tác vụ nền) khi máy tính đang khởi động</translation>
+        <source>Launch Zshot daemon (background process) when computer is booted</source>
+        <translation>Khởi chạy Zshot daemon (tác vụ nền) khi máy tính đang khởi động</translation>
     </message>
     <message>
         <location filename="../../src/config/generalconf.cpp" line="462"/>
@@ -1636,8 +1656,8 @@ Vui lòng xử lí chúng thủ công trong tệp cấu hình.</translation>
     <message>
         <location filename="../../src/widgets/infowindow.ui" line="102"/>
         <location filename="../../build/src/flameshot_autogen/include/ui_infowindow.h" line="121"/>
-        <source>Flameshot v</source>
-        <translation>Flameshot v</translation>
+        <source>Zshot v</source>
+        <translation>Zshot v</translation>
     </message>
     <message>
         <location filename="../../src/widgets/infowindow.ui" line="115"/>
@@ -2204,8 +2224,8 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
     </message>
     <message>
         <location filename="../../src/cli/commandlineparser.cpp" line="334"/>
-        <source>Per default runs Flameshot in the background and adds a tray icon for configuration.</source>
-        <translation>Mặc định, Flameshot sẽ chạy ngầm và hiển thị biểu tượng ở khay hệ thống để cấu hình.</translation>
+        <source>Per default runs Zshot in the background and adds a tray icon for configuration.</source>
+        <translation>Mặc định, Zshot sẽ chạy ngầm và hiển thị biểu tượng ở khay hệ thống để cấu hình.</translation>
     </message>
     <message>
         <location filename="../../src/widgets/trayicon.cpp" line="83"/>
@@ -2298,6 +2318,10 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
     <message>
         <source>Change the tool&apos;s thickness</source>
         <translation type="vanished">Change the tool&apos;s thickness</translation>
+    </message>
+    <message>
+        <source>Put the capture on the background set in the config</source>
+        <translation>Đặt ảnh chụp lên nền đã cấu hình</translation>
     </message>
 </context>
 <context>
@@ -2545,8 +2569,8 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
     <message>
         <location filename="../../src/config/setshortcutwidget.cpp" line="50"/>
         <location filename="../../src/config/setshortcutwidget.cpp" line="55"/>
-        <source>Flameshot must be restarted for changes to take effect.</source>
-        <translation>Cần khởi động lại Flameshot để những thay đổi có hiệu lực.</translation>
+        <source>Zshot must be restarted for changes to take effect.</source>
+        <translation>Cần khởi động lại Zshot để những thay đổi có hiệu lực.</translation>
     </message>
 </context>
 <context>
@@ -2668,13 +2692,13 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
     </message>
     <message>
         <location filename="../../src/config/shortcutswidget.cpp" line="268"/>
-        <source>It seems, that Windows forces to open its screenshot tool when the &apos;Print Screen&apos; key is pressed. Would you like to disable this so that Flameshot can use the &apos;Print Screen&apos; key?</source>
+        <source>It seems, that Windows forces to open its screenshot tool when the &apos;Print Screen&apos; key is pressed. Would you like to disable this so that Zshot can use the &apos;Print Screen&apos; key?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/config/shortcutswidget.cpp" line="273"/>
-        <source>Flameshot must be restarted for changes to take effect.</source>
-        <translation type="unfinished">Cần khởi động lại Flameshot để những thay đổi có hiệu lực.</translation>
+        <source>Zshot must be restarted for changes to take effect.</source>
+        <translation type="unfinished">Cần khởi động lại Zshot để những thay đổi có hiệu lực.</translation>
     </message>
     <message>
         <location filename="../../src/config/shortcutswidget.cpp" line="278"/>
@@ -2690,18 +2714,18 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
     </message>
     <message>
         <location filename="../../src/config/shortcutswidget.cpp" line="317"/>
-        <source>Register Flameshot as MS-SCREENCLIP application (administrator privileges required)</source>
+        <source>Register Zshot as MS-SCREENCLIP application (administrator privileges required)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/config/shortcutswidget.cpp" line="321"/>
-        <source>After registering, you can select Flameshot as the default screenshot application in Windows Settings.</source>
+        <source>After registering, you can select Zshot as the default screenshot application in Windows Settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/config/shortcutswidget.cpp" line="334"/>
         <location filename="../../src/config/shortcutswidget.cpp" line="344"/>
-        <source>You may start Flameshot as administrator ONCE and try again!</source>
+        <source>You may start Zshot as administrator ONCE and try again!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2896,8 +2920,8 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
     </message>
     <message>
         <location filename="../../src/utils/systemnotification.cpp" line="51"/>
-        <source>Flameshot Info</source>
-        <translation>Thông tin Flameshot</translation>
+        <source>Zshot Info</source>
+        <translation>Thông tin Zshot</translation>
     </message>
 </context>
 <context>
@@ -3013,6 +3037,14 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
         <source>&amp;Open Save Path</source>
         <translation>&amp;Mở đường dẫn lưu</translation>
     </message>
+    <message>
+        <source>&amp;Beautify the clipboard image</source>
+        <translation>&amp;Làm đẹp ảnh trong clipboard</translation>
+    </message>
+    <message>
+        <source>The clipboard has no image to beautify.</source>
+        <translation>Clipboard không có ảnh để làm đẹp.</translation>
+    </message>
 </context>
 <context>
     <name>UIcolorEditor</name>
@@ -3068,8 +3100,8 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
     <name>UpdateNotificationWidget</name>
     <message>
         <location filename="../../src/widgets/updatenotificationwidget.cpp" line="71"/>
-        <source>New Flameshot version %1 is available</source>
-        <translation>Đã có phiên bản Flameshot mới %1</translation>
+        <source>New Zshot version %1 is available</source>
+        <translation>Đã có phiên bản Zshot mới %1</translation>
     </message>
     <message>
         <location filename="../../src/widgets/updatenotificationwidget.cpp" line="129"/>
@@ -3185,7 +3217,7 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
     </message>
     <message>
         <location filename="../../src/config/visualseditor.cpp" line="142"/>
-        <source>Flameshot must be restarted to apply these changes!</source>
+        <source>Zshot must be restarted to apply these changes!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3346,6 +3378,206 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
         <location filename="../../build/_deps/qtcolorwidgets-src/src/QtColorWidgets/swatch.cpp" line="864"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
+    </message>
+</context>
+<context>
+    <name>BackgroundEditor</name>
+    <message>
+        <source>Auto</source>
+        <comment>output ratio</comment>
+        <translation>Auto</translation>
+    </message>
+    <message>
+        <source>Output ratio</source>
+        <translation>Tỉ lệ khung</translation>
+    </message>
+    <message>
+        <source>Auto</source>
+        <translation>Tự động</translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation>Nền</translation>
+    </message>
+    <message>
+        <source>Wallpaper</source>
+        <translation>Hình nền</translation>
+    </message>
+    <message>
+        <source>Gradient</source>
+        <translation>Chuyển sắc</translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation>Màu</translation>
+    </message>
+    <message>
+        <source>Image</source>
+        <translation>Ảnh</translation>
+    </message>
+    <message>
+        <source>Show all</source>
+        <translation>Xem tất cả</translation>
+    </message>
+    <message>
+        <source>Show less</source>
+        <translation>Thu gọn</translation>
+    </message>
+    <message>
+        <source>Average color of the capture edges</source>
+        <translation>Màu trung bình ở mép ảnh chụp</translation>
+    </message>
+    <message>
+        <source>Transparent</source>
+        <translation>Trong suốt</translation>
+    </message>
+    <message>
+        <source>Choose color...</source>
+        <translation>Chọn màu…</translation>
+    </message>
+    <message>
+        <source>Choose a color</source>
+        <translation>Chọn màu</translation>
+    </message>
+    <message>
+        <source>Drop images here or</source>
+        <translation>Kéo ảnh vào đây hoặc</translation>
+    </message>
+    <message>
+        <source>choose from the computer</source>
+        <translation>chọn từ máy tính</translation>
+    </message>
+    <message>
+        <source>Images are kept in the library for next time</source>
+        <translation>Ảnh được lưu vào thư viện, lần sau vẫn còn</translation>
+    </message>
+    <message>
+        <source>Adjustments</source>
+        <translation>Điều chỉnh</translation>
+    </message>
+    <message>
+        <source>Padding</source>
+        <translation>Lề</translation>
+    </message>
+    <message>
+        <source>Corner radius</source>
+        <translation>Bo góc</translation>
+    </message>
+    <message>
+        <source>Shadow</source>
+        <translation>Đổ bóng</translation>
+    </message>
+    <message>
+        <source>Background blur</source>
+        <translation>Làm mờ nền</translation>
+    </message>
+    <message>
+        <source>Border</source>
+        <translation>Viền</translation>
+    </message>
+    <message>
+        <source>Border color</source>
+        <translation>Màu viền</translation>
+    </message>
+    <message>
+        <source>Add background images</source>
+        <translation>Thêm ảnh nền</translation>
+    </message>
+    <message>
+        <source>Images</source>
+        <translation>Ảnh</translation>
+    </message>
+    <message>
+        <source>Unable to add %1 to the image library</source>
+        <translation>Không thêm được %1 vào thư viện ảnh</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Thêm</translation>
+    </message>
+    <message>
+        <source>Add images from the computer</source>
+        <translation>Thêm ảnh từ máy tính</translation>
+    </message>
+    <message>
+        <source>%1 wallpapers · %2</source>
+        <translation>%1 hình có sẵn · %2</translation>
+    </message>
+    <message>
+        <source>%1 wallpapers</source>
+        <translation>%1 hình có sẵn</translation>
+    </message>
+</context>
+<context>
+    <name>BackgroundWindow</name>
+    <message>
+        <source>Zshot - Beautify capture</source>
+        <translation>Zshot — Làm đẹp ảnh chụp</translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <translation>Xong</translation>
+    </message>
+    <message>
+        <source>close</source>
+        <translation>đóng</translation>
+    </message>
+    <message>
+        <source>Pin</source>
+        <translation>Ghim</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Lưu</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation>Sao chép</translation>
+    </message>
+    <message>
+        <source>copy</source>
+        <translation>sao chép</translation>
+    </message>
+    <message>
+        <source>save</source>
+        <translation>lưu</translation>
+    </message>
+    <message>
+        <source>%1 x %2 px - fit - %3%</source>
+        <translation>%1 × %2 px · Vừa khung · %3%</translation>
+    </message>
+</context>
+<context>
+    <name>BackgroundConf</name>
+    <message>
+        <source>Put every capture on this background</source>
+        <translation>Tự thêm nền cho mọi ảnh chụp</translation>
+    </message>
+    <message>
+        <source>When off, use the Beautify button (G) of the capture toolbar or the --background option</source>
+        <translation>Tắt thì dùng nút Làm đẹp nền (G) trên thanh công cụ, hoặc tham số --background</translation>
+    </message>
+    <message>
+        <source>Preview</source>
+        <translation>Xem trước</translation>
+    </message>
+</context>
+<context>
+    <name>BackgroundTool</name>
+    <message>
+        <source>Background</source>
+        <translation>Làm đẹp nền</translation>
+    </message>
+    <message>
+        <source>Put the capture on a background</source>
+        <translation>Thêm nền, bo góc, đổ bóng cho ảnh chụp</translation>
+    </message>
+</context>
+<context>
+    <name>BackgroundLibrary</name>
+    <message>
+        <source>Photo by %1</source>
+        <translation>Ảnh: %1 / Unsplash</translation>
     </message>
 </context>
 </TS>

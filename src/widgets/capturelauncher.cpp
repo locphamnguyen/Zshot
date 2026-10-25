@@ -8,7 +8,10 @@
 #include "core/qguiappcurrentscreen.h"
 #include "utils/globalvalues.h"
 #include "utils/screenshotsaver.h"
+#include "utils/zshottheme.h"
 
+#include <QBoxLayout>
+#include <QCheckBox>
 #include <QGuiApplication>
 #include <QMimeData>
 #include <QScreen>
@@ -67,6 +70,19 @@ CaptureLauncher::CaptureLauncher(QDialog* parent)
         ui->monitorSelection->setVisible(false);
     }
 #endif
+
+    // Zshot: brand style and the background editor option
+    setStyleSheet(ZshotTheme::styleSheet());
+    ui->launchButton->setProperty("zsVariant", "primary");
+    m_beautify =
+      new QCheckBox(tr("Open the capture in the background editor"), this);
+    m_beautify->setToolTip(
+      tr("Put the capture on a background, round its corners and add a "
+         "shadow before copying or saving it"));
+    if (QBoxLayout* box = ui->verticalLayout_2) {
+        const int index = box->indexOf(ui->launchButton);
+        box->insertWidget(index < 0 ? box->count() : index, m_beautify);
+    }
 
     ui->delayTime->setSpecialValueText(tr("No Delay"));
     ui->launchButton->setFocus();
@@ -176,6 +192,8 @@ void CaptureLauncher::startCapture()
 #else
     req.setSelectedMonitor(-1);
 #endif
+
+    req.setOpenBackgroundEditor(m_beautify->isChecked());
 
     connectCaptureSlots();
     Flameshot::instance()->requestCapture(req);

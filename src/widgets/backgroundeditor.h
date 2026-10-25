@@ -10,16 +10,20 @@
 #include <QWidget>
 
 class QButtonGroup;
-class QComboBox;
-class QFormLayout;
 class QHBoxLayout;
+class QLabel;
 class QListWidget;
 class QPushButton;
 class QSlider;
+class QStackedWidget;
+class QToolButton;
+class QVBoxLayout;
 
 /**
- * @brief Controls to edit BackgroundSettings. Emits settingsChanged on every
- * modification, it doesn't write the config itself.
+ * @brief Controls to edit BackgroundSettings, laid out as the Zshot cards:
+ * output ratio, background (wallpaper / gradient / color / my images) and
+ * adjustments. Emits settingsChanged on every modification, it doesn't write
+ * the config itself.
  */
 class BackgroundEditor : public QWidget
 {
@@ -33,33 +37,67 @@ public:
 signals:
     void settingsChanged(const BackgroundSettings& settings);
 
+protected:
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
+
 private:
-    QWidget* addSlider(const QString& label,
+    enum Tab
+    {
+        WALLPAPER = 0,
+        GRADIENT = 1,
+        COLOR = 2,
+        MY_IMAGES = 3,
+    };
+
+    QWidget* buildRatioCard();
+    QWidget* buildBackgroundCard();
+    QWidget* buildAdjustCard();
+    QWidget* buildWallpaperPage();
+    QWidget* buildGradientPage();
+    QWidget* buildColorPage();
+    QWidget* buildImagesPage();
+    QListWidget* createGallery(QWidget* parent);
+    QWidget* addSlider(QVBoxLayout* layout,
+                       const QString& label,
                        int max,
                        const QString& suffix,
-                       int BackgroundSettings::* member,
+                       int BackgroundSettings::*member,
                        QHBoxLayout** rowLayout = nullptr);
-    QPushButton* createColorButton(QColor BackgroundSettings::* member);
-    void setRowVisible(QWidget* field, bool visible);
+    QToolButton* createColorButton(QColor BackgroundSettings::*member);
+    void importImages(const QStringList& files);
+    void chooseImages();
+    void selectTab(Tab tab);
+    Tab tabFor(const BackgroundSettings& settings) const;
+    void refreshGalleries();
     void updateComponents();
-    void refreshGallery();
-    void selectDefaultImage();
     void notify();
 
     BackgroundSettings m_settings;
     bool m_updating = false;
+    bool m_galleriesLoaded = false;
+    bool m_wallpapersExpanded = false;
+    Tab m_tab = GRADIENT;
+    QString m_lastWallpaper;
+    QString m_lastMyImage;
 
-    QFormLayout* m_layout;
-    QComboBox* m_type;
-    QWidget* m_gradients;
+    QButtonGroup* m_ratioGroup;
+    QLabel* m_ratioValue;
+    QButtonGroup* m_tabGroup;
+    QStackedWidget* m_pages;
+    QListWidget* m_wallpapers;
+    QLabel* m_wallpaperCredit;
+    QPushButton* m_showAllWallpapers;
     QButtonGroup* m_gradientGroup;
-    QPushButton* m_color;
-    QWidget* m_imageRow;
-    QListWidget* m_gallery;
-    QPushButton* m_removeImage;
-    bool m_galleryLoaded = false;
+    QLabel* m_gradientLabel;
+    QPushButton* m_autoColor;
+    QPushButton* m_transparent;
+    QList<QPair<QToolButton*, QColor>> m_swatches;
+    QLabel* m_colorChip;
+    QLabel* m_colorHex;
+    QListWidget* m_myImages;
     QWidget* m_blurRow;
-    QComboBox* m_aspectRatio;
     QList<QPair<QSlider*, int BackgroundSettings::*>> m_sliders;
-    QList<QPair<QPushButton*, QColor BackgroundSettings::*>> m_colorButtons;
+    QList<QPair<QToolButton*, QColor BackgroundSettings::*>> m_colorButtons;
 };

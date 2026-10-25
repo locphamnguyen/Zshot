@@ -432,8 +432,7 @@ void FlameshotDaemon::handleReplyCheckUpdates(QNetworkReply* reply)
                 QDesktopServices::openUrl(QUrl(m_appLatestUrl));
             }
         } else if (m_showManualCheckAppUpdateStatus) {
-            sendTrayNotification(tr("You have the latest version"),
-                                 "Zshot");
+            sendTrayNotification(tr("You have the latest version"), "Zshot");
         }
     } else {
         qWarning() << "Failed to get information about the latest version. "

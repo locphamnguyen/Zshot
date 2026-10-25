@@ -10,6 +10,7 @@ target_sources(
 
         backgroundeditor.h
         backgroundwindow.h
+        toggleswitch.h
         capturelauncher.h
         draggablewidgetmaker.h
         imagelabel.h
@@ -40,6 +41,7 @@ target_sources(
         PRIVATE
         backgroundeditor.cpp
         backgroundwindow.cpp
+        toggleswitch.cpp
         capturelauncher.cpp
         draggablewidgetmaker.cpp
         imagelabel.cpp

@@ -79,9 +79,8 @@ const QList<GradientPreset> GRADIENTS = {
     { "carbon", "Carbon", { "#1c1c1c", "#383838" }, false, 180 },
 };
 
-const QStringList ASPECT_RATIOS = { "auto", "1:1",  "4:3", "3:2",
-                                    "16:9", "21:9", "2:1", "1.91:1",
-                                    "4:5",  "3:4",  "9:16" };
+const QStringList ASPECT_RATIOS = { "auto", "1:1", "4:5",    "9:16",
+                                    "16:9", "2:1", "1.91:1", "3:4" };
 
 // Shadow color and offset, relative to the shadow blur radius
 constexpr int SHADOW_ALPHA = 140;

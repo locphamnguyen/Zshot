@@ -5,8 +5,12 @@
 #include "core/qguiappcurrentscreen.h"
 #include "utils/confighandler.h"
 #include "utils/globalvalues.h"
+#include "utils/zshottheme.h"
+#include "widgets/backgroundwindow.h"
 
 #include <QApplication>
+#include <QClipboard>
+#include <QCursor>
 #include <QGuiApplication>
 #include <QMenu>
 #include <QScreen>
@@ -190,8 +194,48 @@ void TrayIcon::initMenu()
             Flameshot::instance(),
             &Flameshot::openSavePath);
 
+    // Open the image of the clipboard in the background editor
+    auto* beautifyAction =
+      new QAction(tr("&Beautify the clipboard image"), this);
+    connect(beautifyAction, &QAction::triggered, this, []() {
+        const QPixmap image = QApplication::clipboard()->pixmap();
+        if (image.isNull()) {
+            FlameshotDaemon::instance()->sendTrayNotification(
+              tr("The clipboard has no image to beautify."));
+            return;
+        }
+        QRect geometry(QPoint(), image.deviceIndependentSize().toSize());
+        geometry.moveCenter(QCursor::pos());
+        auto* window = new BackgroundWindow(
+          image, geometry, CaptureRequest(CaptureRequest::GRAPHICAL_MODE));
+        window->show();
+        window->activateWindow();
+    });
+
+    namespace ZC = ZshotTheme::Color;
+    m_captureAction->setIcon(
+      ZshotTheme::icon(QStringLiteral("square-outline"), ZC::ink3));
+    m_launcherAction->setIcon(
+      ZshotTheme::icon(QStringLiteral("apps"), ZC::ink3));
+    beautifyAction->setIcon(
+      ZshotTheme::icon(QStringLiteral("background"), ZC::ink3));
+    openSavePathAction->setIcon(
+      ZshotTheme::icon(QStringLiteral("filepath"), ZC::ink3));
+    configAction->setIcon(ZshotTheme::icon(QStringLiteral("config"), ZC::ink3));
+    quitAction->setIcon(ZshotTheme::icon(QStringLiteral("exit-to-app"),
+                                         QColor(0xC0, 0x39, 0x2B)));
+    m_menu->setStyleSheet(QStringLiteral(
+      "QMenu { background: #FFFFFF; border: 1px solid #E7EAF0; padding: 6px; }"
+      "QMenu::item { padding: 7px 28px 7px 10px; color: #141A24; "
+      "border-radius: 6px; }"
+      "QMenu::item:selected { background: #E4F1F8; color: #0B5880; }"
+      "QMenu::icon { padding-left: 10px; }"
+      "QMenu::separator { height: 1px; background: #E7EAF0; margin: 4px 6px; "
+      "}"));
+
     m_menu->addAction(m_captureAction);
     m_menu->addAction(m_launcherAction);
+    m_menu->addAction(beautifyAction);
     m_menu->addSeparator();
 #ifdef ENABLE_IMGUR
     m_menu->addAction(recentAction);
