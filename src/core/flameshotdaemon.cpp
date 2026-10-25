@@ -144,7 +144,7 @@ void FlameshotDaemon::createPin(const QPixmap& capture, QRect geometry)
     // A QPixmap loses its device pixel ratio when streamed, so send it along.
 #if defined(USE_KDSINGLEAPPLICATION) &&                                        \
   (defined(Q_OS_MACOS) || defined(Q_OS_WIN))
-    auto kdsa = KDSingleApplication(QStringLiteral("org.flameshot.Flameshot"));
+    auto kdsa = KDSingleApplication(QStringLiteral("vn.zopen.Zshot"));
     stream << QStringLiteral("attachPin") << capture << geometry
            << capture.devicePixelRatio();
     kdsa.sendMessage(data);
@@ -168,7 +168,7 @@ void FlameshotDaemon::copyToClipboard(const QPixmap& capture)
 
 #if defined(USE_KDSINGLEAPPLICATION) &&                                        \
   (defined(Q_OS_MACOS) || defined(Q_OS_WIN))
-    auto kdsa = KDSingleApplication(QStringLiteral("org.flameshot.Flameshot"));
+    auto kdsa = KDSingleApplication(QStringLiteral("vn.zopen.Zshot"));
     stream << QStringLiteral("attachScreenshotToClipboard") << capture;
     kdsa.sendMessage(data);
 #else
@@ -191,7 +191,7 @@ void FlameshotDaemon::copyToClipboard(const QString& text,
 
 #if defined(USE_KDSINGLEAPPLICATION) &&                                        \
   (defined(Q_OS_MACOS) || defined(Q_OS_WIN))
-    auto kdsa = KDSingleApplication(QStringLiteral("org.flameshot.Flameshot"));
+    auto kdsa = KDSingleApplication(QStringLiteral("vn.zopen.Zshot"));
     QByteArray data;
     QDataStream stream(&data, QIODevice::WriteOnly);
     stream << QStringLiteral("attachTextToClipboard") << text << notification;
@@ -273,7 +273,7 @@ void FlameshotDaemon::checkForUpdates()
                 QDesktopServices::openUrl(QUrl(m_appLatestUrl));
             } else {
                 sendTrayNotification(tr("You have the latest version"),
-                                     "Flameshot");
+                                     "Zshot");
             }
         }
     }
@@ -433,7 +433,7 @@ void FlameshotDaemon::handleReplyCheckUpdates(QNetworkReply* reply)
             }
         } else if (m_showManualCheckAppUpdateStatus) {
             sendTrayNotification(tr("You have the latest version"),
-                                 "Flameshot");
+                                 "Zshot");
         }
     } else {
         qWarning() << "Failed to get information about the latest version. "
@@ -442,7 +442,7 @@ void FlameshotDaemon::handleReplyCheckUpdates(QNetworkReply* reply)
             if (FlameshotDaemon::instance()) {
                 FlameshotDaemon::instance()->sendTrayNotification(
                   tr("Failed to get information about the latest version."),
-                  "Flameshot");
+                  "Zshot");
             }
         }
     }

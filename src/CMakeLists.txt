@@ -76,6 +76,8 @@ else ()
 endif ()
 
 add_executable(Flameshot::flameshot ALIAS flameshot)
+# Zshot: the executable is zshot(.exe), the CMake target keeps its upstream name
+set_target_properties(flameshot PROPERTIES OUTPUT_NAME zshot)
 
 if(FLAMESHOT_ICON)
   target_compile_definitions(flameshot PUBLIC FLAMESHOT_ICON="${FLAMESHOT_ICON}")

@@ -89,7 +89,8 @@ option(USE_KDSINGLEAPPLICATION "Use KDSingleApplication library" ON)
 option(USE_BUNDLED_KDSINGLEAPPLICATION "Use a bundled version of the KDSingleApplication library" ${USE_KDSINGLEAPPLICATION})
 option(USE_LAUNCHER_ABSOLUTE_PATH "Use absolute path for the desktop launcher" ON)
 option(USE_WAYLAND_CLIPBOARD "USE KF Gui Wayland Clipboard" OFF)
-option(DISABLE_UPDATE_CHECKER "Disable check for updates" OFF)
+# Zshot: the update checker reads Flameshot releases, so it is off by default
+option(DISABLE_UPDATE_CHECKER "Disable check for updates" ON)
 option(ENABLE_IMGUR "Enable Imgur Uploader" OFF)
 
 if(ENABLE_IMGUR)

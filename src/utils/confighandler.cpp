@@ -30,14 +30,14 @@ bool verifyLaunchFile()
     QString path = QStandardPaths::locate(QStandardPaths::GenericConfigLocation,
                                           "autostart/",
                                           QStandardPaths::LocateDirectory) +
-                   "Flameshot.desktop";
+                   "Zshot.desktop";
     bool res = QFile(path).exists();
 #elif defined(Q_OS_WIN)
     QSettings bootUpSettings(
       "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
       QSettings::NativeFormat);
     bool res =
-      bootUpSettings.value("Flameshot").toString() ==
+      bootUpSettings.value("Zshot").toString() ==
       QDir::toNativeSeparators(QCoreApplication::applicationFilePath());
 #endif
     return res;
@@ -106,9 +106,9 @@ static QMap<class QString, QSharedPointer<ValueHandler>>
     OPTION("uploadHistoryMax"            ,LowerBoundedInt    ( 0, 25         )),
     OPTION("undoLimit"                   ,BoundedInt         ( 0, 999, 100   )),
     // Interface tab
-    OPTION("uiLanguage"                  ,String             ( "auto"        )),
-    OPTION("uiColor"                     ,Color              ( {116, 0, 150} )),
-    OPTION("contrastUiColor"             ,Color              ( {39, 0, 50}   )),
+    OPTION("uiLanguage"                  ,String             ( "vi"          )),
+    OPTION("uiColor"                     ,Color              ( {23, 134, 190})),
+    OPTION("contrastUiColor"             ,Color              ( {11, 88, 128} )),
     OPTION("contrastOpacity"             ,BoundedInt         ( 0, 255, 190   )),
     OPTION("buttons"                     ,ButtonList         ( {}            )),
     // Filename Editor tab
@@ -238,7 +238,7 @@ ConfigHandler::ConfigHandler()
                qApp->organizationName(),
                qApp->applicationName())
 #else
-  : m_settings(qApp->applicationDirPath() + "/flameshot.ini",
+  : m_settings(qApp->applicationDirPath() + "/zshot.ini",
                QSettings::IniFormat)
 #endif
 {
@@ -309,13 +309,13 @@ void ConfigHandler::setStartupLaunch(const bool start)
                         << "-e"
                         << "tell application \"System Events\" to make login "
                            "item at end with properties {name: "
-                           "\"Flameshot\",path:\"/Applications/"
+                           "\"Zshot\",path:\"/Applications/"
                            "flameshot.app\", hidden:false}");
     } else {
         process.start("osascript",
                       QStringList() << "-e"
                                     << "tell application \"System Events\" to "
-                                       "delete login item \"Flameshot\"");
+                                       "delete login item \"Zshot\"");
     }
     if (!process.waitForFinished()) {
         qWarning() << "Login items is changed. " << process.errorString();
@@ -332,7 +332,7 @@ void ConfigHandler::setStartupLaunch(const bool start)
         autostartDir.mkpath(".");
     }
 
-    QFile file(path + "Flameshot.desktop");
+    QFile file(path + "Zshot.desktop");
     if (start) {
         if (file.open(QIODevice::WriteOnly)) {
             QByteArray data("[Desktop Entry]\nName=flameshot\nIcon=flameshot"
@@ -355,7 +355,7 @@ void ConfigHandler::setStartupLaunch(const bool start)
     if (start) {
         QString app_path =
           QDir::toNativeSeparators(QCoreApplication::applicationFilePath());
-        bootUpSettings.setValue("Flameshot", app_path);
+        bootUpSettings.setValue("Zshot", app_path);
 
         // set application workdir
         bootUpPath.beginGroup("flameshot.exe");
@@ -363,7 +363,7 @@ void ConfigHandler::setStartupLaunch(const bool start)
         bootUpPath.endGroup();
 
     } else {
-        bootUpSettings.remove("Flameshot");
+        bootUpSettings.remove("Zshot");
 
         // remove application workdir
         bootUpPath.beginGroup("flameshot.exe");

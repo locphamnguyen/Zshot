@@ -408,9 +408,9 @@ void GeneralConf::initCheckForUpdates()
 void GeneralConf::initAllowMultipleGuiInstances()
 {
     m_allowMultipleGuiInstances = new QCheckBox(
-      tr("Allow multiple flameshot GUI instances simultaneously"), this);
+      tr("Allow multiple zshot GUI instances simultaneously"), this);
     m_allowMultipleGuiInstances->setToolTip(tr(
-      "This allows you to take screenshots of Flameshot itself for example"));
+      "This allows you to take screenshots of Zshot itself for example"));
     m_scrollAreaLayout->addWidget(m_allowMultipleGuiInstances);
     connect(m_allowMultipleGuiInstances,
             &QCheckBox::clicked,
@@ -435,7 +435,7 @@ void GeneralConf::initAutostart()
 {
     m_autostart = new QCheckBox(tr("Launch in background at startup"), this);
     m_autostart->setToolTip(tr(
-      "Launch Flameshot daemon (background process) when computer is booted"));
+      "Launch Zshot daemon (background process) when computer is booted"));
     m_scrollAreaLayout->addWidget(m_autostart);
 
     connect(

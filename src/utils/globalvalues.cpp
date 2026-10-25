@@ -16,7 +16,7 @@ int GlobalValues::buttonBaseSize()
 
 QString GlobalValues::versionInfo()
 {
-    return QStringLiteral("Flameshot " APP_VERSION " (" FLAMESHOT_GIT_HASH ")"
+    return QStringLiteral("Zshot " APP_VERSION " (" FLAMESHOT_GIT_HASH ")"
                           "\nCompiled with Qt " QT_VERSION_STR);
 }
 
@@ -25,7 +25,7 @@ QString GlobalValues::iconPath()
 #if USE_MONOCHROME_ICON
     return QString(":img/app/flameshot.monochrome.svg");
 #else
-    return { ":img/app/flameshot.svg" };
+    return { ":img/app/zshot.svg" };
 #endif
 }
 
@@ -34,7 +34,7 @@ QString GlobalValues::iconPathPNG()
 #if USE_MONOCHROME_ICON
     return QString(":img/app/flameshot.monochrome.png");
 #else
-    return { ":img/app/flameshot.png" };
+    return { ":img/app/zshot.png" };
 #endif
 }
 
@@ -52,6 +52,6 @@ QString GlobalValues::trayIconPath()
     return { ":img/app/flameshot.monochrome.png" };
 #endif
 #else
-    return { ":img/app/flameshot.png" };
+    return { ":img/app/zshot.png" };
 #endif
 }

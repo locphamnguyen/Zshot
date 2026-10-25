@@ -1,14 +1,21 @@
 #pragma code_page(65001) // UTF-8
 
-IDI_ICON1 ICON "img\\app\\flameshot.ico"
+IDI_ICON1 ICON "img\\app\\zshot.ico"
 
 #include <windows.h>
 
 #define VER_FILEVERSION             FLAMESHOT_VERSION_MAJOR,FLAMESHOT_VERSION_MINOR,FLAMESHOT_VERSION_BUGFIX,FLAMESHOT_VERSION_BUILD
+#if defined(__MINGW32__)
+// windres drops the quotes of -DFLAMESHOT_VERSION_STRING="...": build the string here
+#define ZS_STR_(x) #x
+#define ZS_STR(x) ZS_STR_(x)
+#define VER_FILEVERSION_STR         ZS_STR(FLAMESHOT_VERSION_MAJOR.FLAMESHOT_VERSION_MINOR.FLAMESHOT_VERSION_BUGFIX)
+#else
 #define VER_FILEVERSION_STR         FLAMESHOT_VERSION_STRING
+#endif
 
 #define VER_PRODUCTVERSION          FLAMESHOT_VERSION_MAJOR,FLAMESHOT_VERSION_MINOR,FLAMESHOT_VERSION_BUGFIX,FLAMESHOT_VERSION_BUILD
-#define VER_PRODUCTVERSION_STR      FLAMESHOT_VERSION_STRING
+#define VER_PRODUCTVERSION_STR      VER_FILEVERSION_STR
 
 #ifndef DEBUG
 #define VER_DEBUG                   0
@@ -30,12 +37,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName",      "The flameshot Org."
-            VALUE "FileDescription",  "Flameshot"
+            VALUE "FileDescription",  "Zshot"
             VALUE "FileVersion",      VER_FILEVERSION_STR
-            VALUE "InternalName",     "flameshot"
+            VALUE "InternalName",     "zshot"
             VALUE "LegalCopyright",   "Copyright (C) 2017-2020 flameshot.org"
-            VALUE "OriginalFilename", "flameshot.exe"
-            VALUE "ProductName",      "Flameshot"
+            VALUE "OriginalFilename", "zshot.exe"
+            VALUE "ProductName",      "Zshot"
             VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
         END
     END
