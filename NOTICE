@@ -18,10 +18,11 @@ Public source code: https://github.com/locphamnguyen/Zshot
 
 The Zshot tray process sends exactly { instanceId, version } to
 https://updater.zopen.vn/zshot/v1/ping 30 seconds after start and every 12
-hours, and shows the announcement returned (new version, security notice).
-instanceId is a random id created once per installation. Nothing else is sent
-and the central page does not record IP addresses. Source code of both sides:
-src/core/phonehome.cpp and deploy/phone-home-worker.
+hours, and shows the announcement returned (new version, support, security
+notice). instanceId is a random id created once per installation. Nothing else
+is sent and the central page, shared by the Zopen products, stores only
+instanceId, version and the time of the call; it does not record IP addresses.
+Source code of the app side: src/core/phonehome.cpp.
 
 Maintainer of Zshot: Nguyễn Tiến Lộc (Loc Nguyen)
   Website: https://locnguyendata.com

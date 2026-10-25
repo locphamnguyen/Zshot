@@ -97,9 +97,9 @@ Bộ cài chính thức được GitHub Actions build: Windows bằng MSVC (`.gi
 Giống ZaloCRM, tiến trình Zshot chạy ở khay hệ thống **gọi về** `https://updater.zopen.vn/zshot/v1/ping` 30 giây sau khi khởi động, rồi mỗi 12 giờ một lần.
 
 - **Gửi đi đúng hai trường** `{ instanceId, version }`. `instanceId` là một mã ngẫu nhiên sinh ra một lần cho mỗi bản cài, lưu trong `zshot.ini`. Không gửi ảnh chụp, tên máy, tài khoản, địa chỉ IP hay bất kỳ dữ liệu nào khác. Máy chủ cũng không ghi IP.
-- **Mục đích**: biết có bao nhiêu bản Zshot đang được dùng, ở phiên bản nào, và gửi **thông báo** (có bản mới, cảnh báo bảo mật). Thông báo hiện thành một dải ở đầu các cửa sổ Cài đặt, Làm đẹp nền và Launcher; bấm ✕ để ẩn.
+- **Mục đích**: biết có bao nhiêu bản Zshot đang được dùng, ở phiên bản nào, và gửi **thông báo** (có bản mới, hỗ trợ, cảnh báo bảo mật). Link trong thông báo đi qua `updater.zopen.vn/r/…` để đếm số lượt bấm; link không mang mã bản cài. Thông báo hiện thành một dải ở đầu các cửa sổ Cài đặt, Làm đẹp nền và Launcher; bấm ✕ để ẩn.
 - **Không làm phiền**: không có mạng hoặc máy chủ lỗi thì Zshot bỏ qua, không báo gì.
-- Mã nguồn hai phía công khai: phía app ở [`src/core/phonehome.cpp`](src/core/phonehome.cpp), phía máy chủ ở [`deploy/phone-home-worker`](deploy/phone-home-worker).
+- Mã nguồn phía app công khai ở [`src/core/phonehome.cpp`](src/core/phonehome.cpp). Máy chủ `updater.zopen.vn` dùng chung cho các phần mềm Zopen, chỉ lưu `instanceId`, `version`, thời điểm gọi về, và nhận ra Zshot qua đường dẫn `/zshot/`.
 
 Cần tư vấn, custom tính năng hoặc triển khai Zshot cho doanh nghiệp: [locnguyendata.com](https://locnguyendata.com/?utm_source=github&utm_medium=readme&utm_campaign=service_promo&utm_content=zshot_readme) · locnt@locnguyendata.com
 

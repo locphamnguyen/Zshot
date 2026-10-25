@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: 2026 Nguyễn Tiến Lộc (Loc Nguyen)
 //
 // Port of zcrm-core internal/modules/phonehome (service.go, announcement.go).
-// CONTRACT WITH THE CENTRAL PAGE (deploy/phone-home-worker/):
+// CONTRACT WITH THE CENTRAL PAGE (updater.zopen.vn, shared by the Zopen products):
 //
 //   send:    { instanceId, version }   — EXACTLY these two fields, nothing more
 //   receive: { announcement: null | { id, text, level?, link?, linkLabel?,
