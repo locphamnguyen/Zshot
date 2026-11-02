@@ -234,7 +234,12 @@ void BackgroundWindow::exportWith(CaptureRequest::ExportTask task)
     request.setBackgroundMode(CaptureRequest::BACKGROUND_NEVER);
     // The selection geometry was already printed before opening the editor
     request.removeTask(CaptureRequest::PRINT_GEOMETRY);
-    if (task != CaptureRequest::NO_TASK) {
+    if (task == CaptureRequest::SAVE) {
+        // addTask() throws for SAVE: an uncaught exception in this slot
+        // terminated the whole app. No path means "ask / use the save path",
+        // as the Save button of the capture toolbar does.
+        request.addSaveTask();
+    } else if (task != CaptureRequest::NO_TASK) {
         request.addTask(task);
     }
     // Keep a pinned capture centered on the original selection
