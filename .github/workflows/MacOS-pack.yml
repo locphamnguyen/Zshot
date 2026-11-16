@@ -45,6 +45,9 @@ jobs:
     env:
       APP_NAME: zshot
       DIR_BUILD: build
+      # Developer ID signing + notarization only when the secrets exist
+      # (pull requests from forks get none and fall back to ad hoc signing).
+      CAN_SIGN: ${{ secrets.MACOS_CERT_P12_BASE64 != '' && secrets.NOTARY_KEY_P8_BASE64 != '' }}
 
     steps:
       - name: Checkout Source code
@@ -119,11 +122,72 @@ jobs:
           otool -l "${DIR_BUILD}/src/zshot.app/Contents/MacOS/zshot" | \
             sed -n '/LC_BUILD_VERSION/,/cmd/p'
 
-      - name: Build dmg package
+      - name: Import Developer ID certificate
+        if: env.CAN_SIGN == 'true'
+        env:
+          CERT_P12_BASE64: ${{ secrets.MACOS_CERT_P12_BASE64 }}
+          CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
         run: |
-          cd "${DIR_BUILD}"
-          ninja create_dmg
-          mv "src/Zshot-${VERSION}.dmg" "src/Zshot-${VERSION}-${{ matrix.dist.arch }}.dmg"
+          KEYCHAIN="${RUNNER_TEMP}/zshot-signing.keychain-db"
+          KEYCHAIN_PASSWORD="$(openssl rand -hex 24)"
+          echo "::add-mask::${KEYCHAIN_PASSWORD}"
+          CERT_FILE="${RUNNER_TEMP}/zshot-cert.p12"
+
+          printf '%s' "${CERT_P12_BASE64}" | base64 --decode > "${CERT_FILE}"
+
+          security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN}"
+          security set-keychain-settings -lut 21600 "${KEYCHAIN}"
+          security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN}"
+          security import "${CERT_FILE}" -P "${CERT_PASSWORD}" -A -t cert -f pkcs12 -k "${KEYCHAIN}"
+          rm -f "${CERT_FILE}"
+
+          # Intermediate CA for Developer ID certificates, in case the
+          # runner image does not ship it.
+          curl -fsSL -o "${RUNNER_TEMP}/DeveloperIDG2CA.cer"             https://www.apple.com/certificateauthority/DeveloperIDG2CA.cer
+          security import "${RUNNER_TEMP}/DeveloperIDG2CA.cer" -k "${KEYCHAIN}" || true
+          rm -f "${RUNNER_TEMP}/DeveloperIDG2CA.cer"
+
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s             -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN}" > /dev/null
+          security list-keychains -d user -s "${KEYCHAIN}"             $(security list-keychains -d user | tr -d '"')
+
+          echo "Code signing identities in the temporary keychain:"
+          security find-identity -v -p codesigning "${KEYCHAIN}" | tail -1
+          echo "SIGN_KEYCHAIN=${KEYCHAIN}" >> "$GITHUB_ENV"
+
+      - name: Sign app bundle with Developer ID
+        if: env.CAN_SIGN == 'true'
+        env:
+          SIGN_IDENTITY: ${{ secrets.MACOS_SIGN_IDENTITY }}
+        run: |
+          bash packaging/macos/sign_app.sh             "${DIR_BUILD}/src/zshot.app" "${SIGN_IDENTITY}" "${SIGN_KEYCHAIN}"
+
+      - name: Build dmg package
+        env:
+          SIGN_IDENTITY: ${{ env.CAN_SIGN == 'true' && secrets.MACOS_SIGN_IDENTITY || '' }}
+        run: |
+          # Call the packaging script directly rather than `ninja create_dmg`
+          # so the build cannot re-run and overwrite the Developer ID
+          # signature applied above. Empty identity => ad hoc signed DMG.
+          bash packaging/macos/create_dmg.sh             "${DIR_BUILD}/src/zshot.app"             "${DIR_BUILD}/src/Zshot-${VERSION}-${{ matrix.dist.arch }}.dmg"             "${SIGN_IDENTITY}"             "${SIGN_IDENTITY}"
+
+      - name: Notarize and staple dmg
+        if: env.CAN_SIGN == 'true'
+        env:
+          NOTARY_KEY_P8_BASE64: ${{ secrets.NOTARY_KEY_P8_BASE64 }}
+          NOTARY_KEY_ID: ${{ secrets.NOTARY_KEY_ID }}
+          NOTARY_ISSUER_ID: ${{ secrets.NOTARY_ISSUER_ID }}
+        run: |
+          KEY_FILE="${RUNNER_TEMP}/zshot-notary-key.p8"
+          printf '%s' "${NOTARY_KEY_P8_BASE64}" | base64 --decode > "${KEY_FILE}"
+          bash packaging/macos/notarize_dmg.sh             "${DIR_BUILD}/src/Zshot-${VERSION}-${{ matrix.dist.arch }}.dmg"             "${KEY_FILE}" "${NOTARY_KEY_ID}" "${NOTARY_ISSUER_ID}"
+
+      - name: Remove signing keychain and keys
+        if: always()
+        run: |
+          rm -f "${RUNNER_TEMP}/zshot-notary-key.p8" "${RUNNER_TEMP}/zshot-cert.p12"
+          if [ -n "${SIGN_KEYCHAIN:-}" ] && [ -f "${SIGN_KEYCHAIN}" ]; then
+            security delete-keychain "${SIGN_KEYCHAIN}" || true
+          fi
 
       - name: Artifact Upload
         uses: actions/upload-artifact@v7

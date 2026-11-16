@@ -56,10 +56,7 @@ Bộ cài chưa được ký số. Nếu Windows SmartScreen cảnh báo, bấm 
 | `Zshot-<phiên bản>-arm64.dmg` | Mac chip Apple (M1, M2, M3, M4…) |
 | `Zshot-<phiên bản>-intel.dmg` | Mac chip Intel |
 
-Mở file `.dmg`, kéo **Zshot** vào **Applications**. Ứng dụng chưa được Apple công chứng (notarize), nên lần đầu macOS sẽ chặn. Có hai cách mở:
-
-- Chuột phải vào Zshot trong Applications › **Open** › **Open**.
-- Hoặc chạy lệnh: `xattr -dr com.apple.quarantine /Applications/zshot.app`
+Mở file `.dmg`, kéo **Zshot** vào **Applications** rồi mở như mọi ứng dụng khác. Từ bản 1.1.0, bản DMG được ký Developer ID và được Apple công chứng (notarize), nên macOS không chặn khi mở lần đầu. Riêng bản 1.0.0 cũ chưa công chứng: chuột phải vào Zshot trong Applications › **Open** › **Open**.
 
 Zshot cần quyền **Screen Recording** để chụp: System Settings › Privacy & Security › Screen Recording › bật Zshot.
 
