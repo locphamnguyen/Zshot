@@ -502,6 +502,15 @@ void Flameshot::exportCapture(const QPixmap& rawCapture,
         }
     }
 
+    // Copy first, so the image can be pasted even while the save dialog is
+    // open or after it is cancelled. saveAfterCopy already writes a file on
+    // copy, which would save twice here, so it keeps the old order.
+    // Only for the interactive save (no explicit path), not scripted saves.
+    if ((tasks & CR::SAVE) && !(tasks & CR::COPY) && req.path().isEmpty() &&
+        ConfigHandler().copyBeforeSave() && !ConfigHandler().saveAfterCopy()) {
+        FlameshotDaemon::copyToClipboard(capture);
+    }
+
     if (tasks & CR::SAVE) {
         if (req.path().isEmpty()) {
             saveToFilesystemGUI(capture);
