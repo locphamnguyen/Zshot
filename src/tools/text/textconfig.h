@@ -8,6 +8,7 @@
 class QVBoxLayout;
 class QPushButton;
 class QComboBox;
+class QCheckBox;
 
 class TextConfig : public QWidget
 {
@@ -21,6 +22,7 @@ public:
     void setWeight(int weight);
     void setItalic(bool italic);
     void setTextAlignment(Qt::AlignmentFlag alignment);
+    void setBackground(bool background);
 
 signals:
     void fontFamilyChanged(const QString& f);
@@ -29,6 +31,7 @@ signals:
     void fontWeightChanged(const QFont::Weight w);
     void fontItalicChanged(const bool italic);
     void alignmentChanged(Qt::AlignmentFlag alignment);
+    void backgroundChanged(bool background);
 public slots:
 
 private slots:
@@ -45,4 +48,6 @@ private:
     QPushButton* m_leftAlignButton;
     QPushButton* m_centerAlignButton;
     QPushButton* m_rightAlignButton;
+
+    QCheckBox* m_backgroundCheck;
 };

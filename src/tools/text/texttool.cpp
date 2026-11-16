@@ -9,9 +9,31 @@
 #define BASE_POINT_SIZE 8
 #define MAX_INFO_LENGTH 24
 
+namespace {
+// Text background box: the Zshot UI colour mixed 15 % with white,
+// 85 % opaque, rounded corners — option C approved on Zdesign zshot-text-nen.
+const double BACKGROUND_TINT = 0.15;
+const double BACKGROUND_OPACITY = 0.85;
+const qreal BACKGROUND_RADIUS = 6;
+
+QColor textBackgroundColor()
+{
+    const QColor base = ConfigHandler().uiColor();
+    auto mix = [](int channel) {
+        return qRound(255 - BACKGROUND_TINT * (255 - channel));
+    };
+    return QColor(mix(base.red()),
+                  mix(base.green()),
+                  mix(base.blue()),
+                  qRound(255 * BACKGROUND_OPACITY));
+}
+} // namespace
+
 TextTool::TextTool(QObject* parent)
   : CaptureTool(parent)
   , m_size(1)
+  , m_background(ConfigHandler().textBackground())
+  , m_backgroundColor(textBackgroundColor())
 {
     QString fontFamily = ConfigHandler().fontFamily();
     if (!fontFamily.isEmpty()) {
@@ -34,6 +56,8 @@ void TextTool::copyParams(const TextTool* from, TextTool* to)
     to->m_size = from->m_size;
     to->m_color = from->m_color;
     to->m_textArea = from->m_textArea;
+    to->m_background = from->m_background;
+    to->m_backgroundColor = from->m_backgroundColor;
     to->m_currentPos = from->m_currentPos;
 }
 
@@ -155,6 +179,10 @@ QWidget* TextTool::configurationWidget()
 
     connect(
       m_confW, &TextConfig::alignmentChanged, this, &TextTool::updateAlignment);
+    connect(m_confW,
+            &TextConfig::backgroundChanged,
+            this,
+            &TextTool::updateBackground);
 
     m_confW->setFontFamily(m_font.family());
     m_confW->setItalic(m_font.italic());
@@ -162,6 +190,7 @@ QWidget* TextTool::configurationWidget()
     m_confW->setStrikeOut(m_font.strikeOut());
     m_confW->setWeight(m_font.weight());
     m_confW->setTextAlignment(m_alignment);
+    m_confW->setBackground(m_background);
     return m_confW;
 }
 
@@ -194,6 +223,10 @@ CaptureTool* TextTool::copy(QObject* parent)
                 &TextConfig::alignmentChanged,
                 textTool,
                 &TextTool::updateAlignment);
+        connect(m_confW,
+                &TextConfig::backgroundChanged,
+                textTool,
+                &TextTool::updateBackground);
     }
     copyParams(this, textTool);
     return textTool;
@@ -213,12 +246,25 @@ void TextTool::process(QPainter& painter, const QPixmap& pixmap)
     fontsize.setWidth(fontsize.width() + val * 2);
     fontsize.setHeight(fontsize.height() + val * 2);
     m_textArea.setSize(fontsize);
-    // draw text
-    painter.setFont(m_font);
-    painter.setPen(m_color);
     if (!editMode()) {
-        painter.drawText(
-          m_textArea + QMargins(-val, -val, val, val), m_alignment, m_text);
+        // background box only once typing is finished, so it never covers
+        // the editor; it spans m_textArea = text + val on every side
+        if (m_background) {
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing, true);
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(m_backgroundColor);
+            painter.drawRoundedRect(
+              m_textArea, BACKGROUND_RADIUS, BACKGROUND_RADIUS);
+            painter.restore();
+        }
+        // draw text inside the margin so centre / right alignment keeps
+        // val on both sides of the widest line; never clip italic overhang
+        painter.setFont(m_font);
+        painter.setPen(m_color);
+        painter.drawText(m_textArea.adjusted(val, val, -val, -val),
+                         m_alignment | Qt::TextDontClip,
+                         m_text);
     }
     painter.setFont(orig_font);
     painter.setPen(orig_pen);
@@ -333,6 +379,12 @@ void TextTool::updateFontItalic(const bool italic)
 void TextTool::move(const QPoint& pos)
 {
     m_textArea.moveTo(pos);
+}
+
+void TextTool::updateBackground(const bool background)
+{
+    m_background = background;
+    ConfigHandler().setTextBackground(background);
 }
 
 void TextTool::updateAlignment(Qt::AlignmentFlag alignment)
