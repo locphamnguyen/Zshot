@@ -2961,6 +2961,16 @@ Bạn có thể cần phải thoát khỏi dấu &apos;#&apos; như trong &apos;
         <source>Right Align</source>
         <translation>Căn phải</translation>
     </message>
+    <message>
+        <location filename="../../src/tools/text/textconfig.cpp" line="118"/>
+        <source>Text background</source>
+        <translation>Nền sau chữ</translation>
+    </message>
+    <message>
+        <location filename="../../src/tools/text/textconfig.cpp" line="120"/>
+        <source>Draw a light box behind the text once you finish typing</source>
+        <translation>Vẽ ô nền nhạt sau chữ khi gõ xong</translation>
+    </message>
 </context>
 <context>
     <name>TextTool</name>

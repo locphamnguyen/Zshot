@@ -66,6 +66,7 @@ private slots:
     void updateFontWeight(QFont::Weight weight);
     void updateFontItalic(bool italic);
     void updateAlignment(Qt::AlignmentFlag alignment);
+    void updateBackground(bool background);
 
 private:
     void closeEditor();
@@ -77,6 +78,9 @@ private:
     int m_size;
     QColor m_color;
     QRect m_textArea;
+    // light box behind finished text (setting «Nền sau chữ»)
+    bool m_background;
+    QColor m_backgroundColor;
     QPointer<TextWidget> m_widget;
     QPointer<TextConfig> m_confW;
     QPoint m_currentPos;

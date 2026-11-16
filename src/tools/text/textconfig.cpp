@@ -6,6 +6,7 @@
 #include "utils/confighandler.h"
 #include "utils/pathinfo.h"
 
+#include <QCheckBox>
 #include <QComboBox>
 #include <QFontDatabase>
 #include <QHBoxLayout>
@@ -22,6 +23,7 @@ TextConfig::TextConfig(QWidget* parent)
   , m_leftAlignButton(nullptr)
   , m_centerAlignButton(nullptr)
   , m_rightAlignButton(nullptr)
+  , m_backgroundCheck(nullptr)
 {
 
     connect(m_fontsCB,
@@ -111,6 +113,21 @@ TextConfig::TextConfig(QWidget* parent)
     modifiersLayout->addWidget(m_italicButton);
     m_layout->addLayout(modifiersLayout);
     m_layout->addLayout(alignmentLayout);
+
+    // Light box drawn behind finished text so it stands out from the capture
+    m_backgroundCheck = new QCheckBox(tr("Text background"));
+    m_backgroundCheck->setToolTip(
+      tr("Draw a light box behind the text once you finish typing"));
+    connect(m_backgroundCheck,
+            &QCheckBox::toggled,
+            this,
+            &TextConfig::backgroundChanged);
+    m_layout->addWidget(m_backgroundCheck);
+}
+
+void TextConfig::setBackground(const bool background)
+{
+    m_backgroundCheck->setChecked(background);
 }
 
 void TextConfig::setFontFamily(const QString& fontFamily)
