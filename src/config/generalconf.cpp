@@ -94,6 +94,7 @@ void GeneralConf::_updateComponents(bool allowEmptySavePath)
     m_abortNotifications->setChecked(config.showAbortNotification());
     m_autostart->setChecked(config.startupLaunch());
     m_saveAfterCopy->setChecked(config.saveAfterCopy());
+    m_copyBeforeSave->setChecked(config.copyBeforeSave());
     m_copyPathAfterSave->setChecked(config.copyPathAfterSave());
     m_antialiasingPinZoom->setChecked(config.antialiasingPinZoom());
     m_useJpgForClipboard->setChecked(config.useJpgForClipboard());
@@ -518,6 +519,16 @@ void GeneralConf::initSaveAfterCopy()
             this,
             &GeneralConf::saveAfterCopyChanged);
 
+    m_copyBeforeSave = new QCheckBox(tr("Copy to clipboard when saving"), this);
+    m_copyBeforeSave->setToolTip(
+      tr("Copy the image to the clipboard before asking where to save it. "
+         "Ignored when \"Save image after copy\" is on."));
+    m_scrollAreaLayout->addWidget(m_copyBeforeSave);
+    connect(m_copyBeforeSave,
+            &QCheckBox::clicked,
+            this,
+            &GeneralConf::copyBeforeSaveChanged);
+
     auto* box = new QGroupBox(tr("Save Path"));
     box->setFlat(true);
     m_layout->addWidget(box);
@@ -685,6 +696,11 @@ void GeneralConf::initUseJpgForClipboard()
 void GeneralConf::saveAfterCopyChanged(bool checked)
 {
     ConfigHandler().setSaveAfterCopy(checked);
+}
+
+void GeneralConf::copyBeforeSaveChanged(bool checked)
+{
+    ConfigHandler().setCopyBeforeSave(checked);
 }
 
 void GeneralConf::changeSavePath()

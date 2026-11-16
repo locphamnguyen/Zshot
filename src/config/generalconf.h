@@ -48,6 +48,7 @@ private slots:
     void uploadHistoryMaxChanged(int max);
     void undoLimit(int limit);
     void saveAfterCopyChanged(bool checked);
+    void copyBeforeSaveChanged(bool checked);
     void changeSavePath();
     void importConfiguration();
     void exportFileConfiguration();
@@ -147,6 +148,7 @@ private:
     QPushButton* m_exportButton;
     QPushButton* m_resetButton;
     QCheckBox* m_saveAfterCopy;
+    QCheckBox* m_copyBeforeSave;
     QLineEdit* m_savePath;
     QLineEdit* m_uploadClientKey;
     QPushButton* m_changeSaveButton;

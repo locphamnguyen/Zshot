@@ -100,6 +100,7 @@ static QMap<class QString, QSharedPointer<ValueHandler>>
 #endif
     OPTION("uploadWithoutConfirmation"   ,Bool               ( false         )),
     OPTION("saveAfterCopy"               ,Bool               ( false         )),
+    OPTION("copyBeforeSave"              ,Bool               ( true          )),
     OPTION("savePath"                    ,ExistingDir        (               )),
     OPTION("savePathFixed"               ,Bool               ( false         )),
     OPTION("saveAsFileExtension"         ,SaveFileExtension  (               )),
