@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 # cmake_policy(SET CMP0076 OLD)
 
 # Zshot version (Zshot 1.x is based on Flameshot 15.0.0)
-set(FLAMESHOT_VERSION 1.1.1)
+set(FLAMESHOT_VERSION 1.1.2)
 
 # Flameshot-org
 set(GIT_API_URL "https://api.github.com/repos/flameshot-org/flameshot/releases/latest")
