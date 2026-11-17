@@ -60,7 +60,7 @@ if (APPLE)
 
     execute_process(
         # copy icon from cache generated on the localhost if generation on CI failed
-        COMMAND bash "-c" "[[ -r '\"${FLAMESHOT_ICNS}\"' ]] || cp \"${CMAKE_SOURCE_DIR}\"/packaging/macos/flameshot.icns \"${FLAMESHOT_ICNS}\""
+        COMMAND bash "-c" "[[ -r \"${FLAMESHOT_ICNS}\" ]] || cp \"${CMAKE_SOURCE_DIR}\"/packaging/macos/flameshot.icns \"${FLAMESHOT_ICNS}\""
     )
 
     # Set application icon
