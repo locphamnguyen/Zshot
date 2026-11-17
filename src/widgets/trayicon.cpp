@@ -44,7 +44,9 @@ TrayIcon::TrayIcon(QObject* parent)
     QIcon icon =
       QIcon::fromTheme("flameshot-tray", QIcon(GlobalValues::trayIconPath()));
 
-#if defined(Q_OS_MACOS)
+#if defined(Q_OS_MACOS) && USE_MONOCHROME_ICON
+    // Chỉ icon đơn sắc mới là mask; icon Zshot nhiều màu mà đặt mask thì thành
+    // khối đặc.
     if (currentMacOsVersion >= QOperatingSystemVersion::MacOSBigSur) {
         icon.setIsMask(true);
     }

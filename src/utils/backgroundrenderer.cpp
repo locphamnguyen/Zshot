@@ -321,8 +321,12 @@ QPixmap render(const QPixmap& capture, const BackgroundSettings& s)
     }
     // Sizes in the settings are logical pixels, the capture has physical ones
     const qreal dpr = capture.devicePixelRatio();
-    const QImage shot =
+    QImage shot =
       capture.toImage().convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    // All math below is in physical pixels. A Retina capture keeps its dpr of 2
+    // in the QImage, which makes QBrush(shot) tile the texture at half size
+    // (the 2x2 repeat); reset it so brush and backdrop sampling stay 1:1.
+    shot.setDevicePixelRatio(1);
     const int w = shot.width();
     const int h = shot.height();
     const int padding = qRound(s.paddingPercent / 100.0 * qMin(w, h));
